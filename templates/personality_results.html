@@ -1,0 +1,88 @@
+<!--
+Author: Colorlib
+Author URL: https://colorlib.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+
+
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+
+    <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <title>UnI</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="static/base.css">
+    <link rel="stylesheet" href="static/vendor.css">
+    <link rel="stylesheet" href="static/main.css">
+    <!-- script
+    ================================================== -->
+    <script src="js/modernizr.js"></script>
+    <script src="js/pace.min.js"></script>
+
+</head>
+
+<body id="top">
+
+    <div id="preloader">
+        <div id="loader"></div>
+    </div>
+
+
+    <!-- header
+    ================================================== -->
+    <header class="s-header">
+
+        <div class="header-logo">
+            <a class="site-logo" href="blog.html">
+                 <a class="mark" href="#home" title="intro">UnI</a>
+            </a>
+        </div>
+
+        <nav class="row header-nav-wrap wide">
+            <ul class="header-main-nav">
+                <li><a class="smoothscroll" href="/index" title="blog" method="get">Home</a></li>
+                <li><a href="/logout" title="logout">Log out</a></li>
+            </ul>
+
+           <div>
+                {% block main %}
+                    <div>
+                    <!-- match name and email -->
+                    <h3 style="color:#c90016; margin-left: 4rem">
+                            Congratulations! You have a match.
+                            His/her name is {{name[0].username}}.
+                    </h3>
+                    </div>
+                    <div>
+                    <h3 style="color:#c90016; margin-left: 4rem">
+                            You can contact him/her at {{name[0].email}}.
+                    </h3>
+                    </div>
+                {% endblock %}
+           </div>
+
+        </div> <!-- end home-content -->
+
+    </section> <!-- end s-home -->
+
+
+    <!-- Java Script
+    ================================================== -->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+</html>
