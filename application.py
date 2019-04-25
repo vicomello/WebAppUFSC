@@ -16,7 +16,7 @@ import smtplib
 from helpers import login_required, apology
 
 lista = [0]
-server = smtplib.SMTP('smtp.gmail.com', 587)
+#server = smtplib.SMTP('smtp.gmail.com', 587)
 
 # Configure application - Copied from Problem set 8
 app = Flask(__name__)
@@ -58,21 +58,16 @@ def register():
     """Register user"""
     # Render register page
     if request.method == "GET":
-        print("0")
         return render_template("register.html")
 
     # Checking if user provided all the required fields correctly and if the username is taken
     elif request.method == "POST":
-        print("teste 1")
         if not request.form.get("username"):
-            print("teste 2")
             return apology("You must provide a username.")
-            print("0")
-        print("1")
 
         if not request.form.get("email"):
             return apology("You must provide a valid email.")
-        print("2")
+
         if not request.form.get("password"):
             return apology("You must provide a password.")
 
@@ -99,7 +94,7 @@ def register():
 
 @app.route("/", methods=["GET"])
 def blog():
-    return render_template("blog.html")
+    return render_template("blog_3.html")
 
 
 # Gets the data from the personality test
@@ -107,7 +102,6 @@ def blog():
 @login_required
 def personality():
     if request.method == "GET":
-        print(0)
         return render_template("personality.html")
         session["user_id"]
 

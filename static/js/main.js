@@ -254,6 +254,7 @@
                 e.preventDefault();
                 e.stopPropagation();
 
+            /* #TODO */
             $('html, body').stop().animate({
                 'scrollTop': $target.offset().top
             }, cfg.scrollDuration, 'swing').promise().done(function () {
