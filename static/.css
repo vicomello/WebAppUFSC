@@ -1402,12 +1402,12 @@ input::-moz-focus-inner {
 }
 
 .pgn__prev {
-  background-image: url("../images/icons/icon-arrow-left.svg");
+  background-image: url("static/images/icons/icon-arrow-left.svg");
   left: 0;
 }
 
 .pgn__next {
-  background-image: url("../images/icons/icon-arrow-right.svg");
+  background-image: url("static/images/icons/icon-arrow-right.svg");
   right: 0;
 }
 
@@ -2032,7 +2032,7 @@ input::-moz-focus-inner {
   width: 100%;
   height: 100vh;
   min-height: 786px;
-  background-image: url(../images/pattern.jpg);
+  background-image: url("static/images/pattern.jpg");
   background-size: 760px 380px;
   position: relative;
   overflow: hidden;
@@ -2070,7 +2070,7 @@ input::-moz-focus-inner {
   content: "";
   width: calc(50% - 200px);
   height: 100vh;
-  background-image: url(../images/app-user.jpg);
+  background-image: url("static/images/app-user.jpg");
   background-origin: center top;
   background-repeat: no-repeat;
   background-size: cover;
@@ -2184,7 +2184,7 @@ input::-moz-focus-inner {
   width: 90px;
   border-radius: 50%;
   background-color: #FFFFFF;
-  background-image: url(../images/icons/icon-play-black.svg);
+  background-image: url("static/images/icons/icon-play-black.svg");
   background-repeat: no-repeat;
   background-position: 55% center;
   background-size: 24px 27px;
@@ -2198,7 +2198,7 @@ input::-moz-focus-inner {
 
 .btn-video:hover .video-icon {
   background-color: #c90016;
-  background-image: url(../images/icons/icon-play.svg);
+  background-image: url("static/images/icons/icon-play.svg");
 }
 
 /* -------------------------------------------------------------------
@@ -2238,7 +2238,7 @@ input::-moz-focus-inner {
   height: 5.6rem;
   width: 5.6rem;
   background-color: #000000;
-  background-image: url(../images/icons/icon-arrow-down.svg);
+  background-image: url("static/images/icons/icon-arrow-down.svg");
   background-position: center center;
   background-repeat: no-repeat;
   background-size: 10px 15px;
@@ -3251,11 +3251,11 @@ html.no-csstransitions .home-content__main {
 }
 
 .s-download .download-content__badges li a.badge-appstore {
-  background-image: url("../images/appstore.png");
+  background-image: url("static/images/appstore.png");
 }
 
 .s-download .download-content__badges li a.badge-googleplay {
-  background-image: url("../images/google-play.png");
+  background-image: url("static/images/google-play.png");
 }
 
 .s-download .download-content__image {
@@ -3620,7 +3620,7 @@ html.no-csstransitions .home-content__main {
   width: 5.6rem;
   line-height: 5.6rem;
   text-align: center;
-  background-image: url(../images/icons/icon-arrow-up.svg);
+  background-image: url("static/images/icons/icon-arrow-up.svg");
   background-color: #000000;
   background-repeat: no-repeat;
   background-position: center center;
@@ -3746,7 +3746,7 @@ html.no-csstransitions .home-content__main {
  * ------------------------------------------------------------------- */
 .page-header {
   background-color: #121619;
-  background-image: url(../images/pattern.jpg);
+  background-image: url("static/images/pattern.jpg");
   background-size: 760px 380px;
   padding-top: 18rem;
   padding-bottom: 8rem;
