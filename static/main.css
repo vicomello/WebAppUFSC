@@ -878,8 +878,8 @@ button.btn--primary,
 input[type="submit"].btn--primary,
 input[type="reset"].btn--primary,
 input[type="button"].btn--primary {
-  background: #00a650;
-  border-color: #00a650;
+  background: #003893;
+  border-color: #003893;
   color: #FFFFFF;
 }
 
@@ -893,8 +893,8 @@ button.btn--primary:focus,
 input[type="submit"].btn--primary:focus,
 input[type="reset"].btn--primary:focus,
 input[type="button"].btn--primary:focus {
-  background: #008d44;
-  border-color: #008d44;
+  background: #003893;
+  border-color: #003893;
 }
 
 /* button modifiers
@@ -1505,7 +1505,7 @@ input::-moz-focus-inner {
   display: inline-block;
   height: 1px;
   width: 320px;
-  background-color: #00a650;
+  background-color: #003893;
   position: absolute;
   bottom: 0;
   left: 50%;
@@ -2111,7 +2111,7 @@ input::-moz-focus-inner {
   content: "";
   height: 2px;
   width: 8rem;
-  background-color: #00a650;
+  background-color: #003893;
   position: absolute;
   left: 8px;
   top: 0;
@@ -2648,7 +2648,7 @@ html.no-csstransitions .home-content__main {
 .s-about {
   padding-top: 20rem;
   padding-bottom: 0;
-  background-color: #00a650;
+  background-color: #003893;
   color: rgba(255, 255, 255, 0.8);
   overflow: hidden;
   position: relative;
@@ -2793,7 +2793,7 @@ html.no-csstransitions .home-content__main {
   font-weight: 700;
   text-align: center;
   color: #FFFFFF;
-  background-color: #00a650;
+  background-color: #003893;
   height: 4.8rem;
   width: 4.8rem;
   border-radius: 50%;
@@ -2840,7 +2840,7 @@ html.no-csstransitions .home-content__main {
 
 .item-feature__icon {
   float: left;
-  color: #00a650;
+  color: #003893;
   font-size: 4.8rem;
   margin-top: -1.8rem;
 }

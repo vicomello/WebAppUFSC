@@ -248,7 +248,7 @@
     var clSmoothScroll = function() {
 
         $('.smoothscroll').on('click', function (e) {
-            var target = this.hash,
+            var target = window.location.hash,
             $target    = $(target);
 
                 e.preventDefault();
