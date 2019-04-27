@@ -3208,7 +3208,7 @@ html.no-csstransitions .home-content__main {
  * ------------------------------------------------------------------- */
 .s-download {
   padding-top: 12rem;
-  background-color: #00a650;
+  background-color: #003893;
   color: rgba(255, 255, 255, 0.8);
   overflow: hidden;
   position: relative;
@@ -3343,11 +3343,11 @@ html.no-csstransitions .home-content__main {
 
 .s-footer a:hover,
 .s-footer a:focus {
-  color: #00a650;
+  color: #003893;
 }
 
 .s-footer .display-2 {
-  color: #00a650;
+  color: #003893;
   margin-bottom: 1.6rem;
 }
 
@@ -3440,8 +3440,8 @@ html.no-csstransitions .home-content__main {
 
 .footer__subscribe #mc-form input[type=submit] {
   color: #FFFFFF;
-  background: #00a650;
-  border-color: #00a650;
+  background: #003893;
+  border-color: #003893;
   margin-right: 0;
   padding: 0 20px 0 24px;
   height: 6.4rem;
@@ -3565,7 +3565,7 @@ html.no-csstransitions .home-content__main {
   font-weight: 600;
   font-size: 2.2rem;
   line-height: 1.455;
-  color: #00a650;
+  color: #003893;
 }
 
 .footer__contact .footer__mail-link:hover,
