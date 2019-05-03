@@ -1742,7 +1742,7 @@ input::-moz-focus-inner {
 }
 
 .header-nav-wrap .header-main-nav li.current a {
-  color: #00a650;
+  color: #003893;
 }
 
 .header-nav-wrap .header-social {
@@ -2092,6 +2092,16 @@ input::-moz-focus-inner {
   overflow: hidden;
   position: relative;
 }
+
+.home-content-2 {
+  z-index: 4;
+  display: table-cell;
+  padding-top: 6.8rem;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
 
 .home-content h1 {
   font-family: "IBM Plex Serif", serif;
@@ -2450,6 +2460,10 @@ html.no-csstransitions .home-content__main {
   .home-content__button .btn {
     width: 24rem;
     font-size: 1.4rem;
+  }
+
+  .center {
+  text-align: center;
   }
 
   .btn-video {
