@@ -134,25 +134,32 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   text-rendering: optimizeLegibility;
 }
 
-h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
+.h7{
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 600;
+  color: #FFFFFF;
+  text-rendering: optimizeLegibility;
+}
+
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h7 {
   margin-top: 6rem;
   margin-bottom: 1.6rem;
 }
 
 @media only screen and (max-width:600px) {
-  h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
+  h1, .h1, h2, .h2, h3, .h3, h4, .h4, h7 {
     margin-top: 5.6rem;
   }
 
 }
 
-h5, .h5, h6, .h6 {
+h5, .h5, h6, .h6, h7 {
   margin-top: 4.8rem;
   margin-bottom: 1.2rem;
 }
 
 @media only screen and (max-width:600px) {
-  h5, .h5, h6, .h6 {
+  h5, .h5, h6, .h6, h7 {
     margin-top: 4rem;
     margin-bottom: 0.8rem;
   }
@@ -2659,6 +2666,37 @@ html.no-csstransitions .home-content__main {
  * # about
  *
  * ------------------------------------------------------------------- */
+.s-about-2 {
+  padding-top: 20rem;
+  padding-bottom: 20rem;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: rgba(255, 255, 255, 0.8);
+  overflow: hidden;
+  position: relative;
+  margin-top: -70px;
+}
+
+.s-about-2 p.lead {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 2.2rem;
+  text-align: center;
+}
+
+.align-form{
+  text-align: left;
+  margin-left: 80px;
+  line-height: 200%;
+}
+
+.s-about-2 p.lead-2 {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 2.2rem;
+  text-align: left;
+  padding: 5 rem;
+}
+
+
+
 .s-about {
   padding-top: 20rem;
   padding-bottom: 0;
