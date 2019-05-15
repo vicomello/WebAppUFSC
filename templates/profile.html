@@ -1,0 +1,70 @@
+{% block main %}
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content=s"width=device-width, initial-scale=1">
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="static/base.css">
+    <link rel="stylesheet" href="static/vendor.css">
+    <link rel="stylesheet" href="static/main.css">
+    <link rel="stylesheet" href="static/match.css">
+    <link rel="stylesheet" href="static/main3.css">
+    <link rel="stylesheet" href="static/custom.css">
+    <!-- script
+    ================================================== -->
+    <script src="js/modernizr.js"></script>
+    <script src="js/pace.min.js"></script>
+</head>
+<body>
+    <header class="s-header">
+        <div class="header-logo">
+            <a class="site-logo" href="blog.html">
+                <a class="mark" href="/" title="intro">WebAppUFSC</a>
+            </a>
+        </div>
+
+            <nav class="row header-nav-wrap wide">
+                <ul class="header-main-nav">
+                    <li><a href="/index" title="blog" method="get">Home</a></li>
+                    <li><a href="/" title="intro" method="get">Sobre</a></li>
+                    <li><a href="/help" title="help" method="get">Como funciona</a></li>
+                    <li class="current"><a href="/profile" title="profile" method="get">Profile</a></li>
+                    <li><a href="/logout" title="logout">Sair</a></li>
+                </ul>
+            </nav>
+            <a class="header-menu-toggle" href="/index"><span>Menu</span></a>
+    </header>
+
+    <div class="s-about-2">
+    <section>
+    <h1> Edit your profile</h1>
+
+    <form class="label" action="/profile" method="POST">
+        <!-- form to collect profile info -->
+        <div class="align-form">
+            <br>
+            <div class="column">
+                  <div class="row" style="background-color:#aaa;">
+                    <h2 >{{name[0].username}}</h2>
+                    <!--<h2 contenteditable="true">{{name[0].username}}</h2> -->
+                      <p>You can contact him/her at {{name[0].email}}.</p>
+                      <p>Etc</p>
+                      <p>Etc</p>
+                  </div>
+            </div>
+        </div>
+    </form>
+    </section>
+    </div>
+
+</body>
+</html>
+{% endblock %}

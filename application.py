@@ -280,6 +280,12 @@ def lifestyle():
 def index():
     return render_template("index.html")
 
+@app.route("/profile", methods=["GET", "POST"])
+@login_required
+def profile():
+    name = db.execute("SELECT username, email FROM users WHERE user_id=:user_id", user_id=session["user_id"])
+    return render_template("profile.html", name=name)
+
 
 @app.route("/check", methods=["GET"])
 def check():
@@ -441,15 +447,17 @@ def match():
             lista.append(item['user_id'])
 
         # Calculating which user appears the most number of times
+
         user_id = session["user_id"]
-        # Removes the own user (loged in) from the list
+
+        # Removes the own user (logged in) from the list
         nova = [x for x in lista if x != user_id]
         # Calculates the mode in that list
         partner = max(set(nova), key=nova.count)
         # Get the user's info based on their user_id
         name = db.execute("SELECT username, email FROM users WHERE user_id=:user_id", user_id=partner)
         # Render the results of who is the highest matching person
-        return render_template("personality_results.html", name=name)
+        return render_template("to-match.html", name=name)
 
 
 # Log out function - copied from Problem Set 8
