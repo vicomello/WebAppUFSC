@@ -53,9 +53,14 @@
             <br>
             <div class="column">
                   <div class="row" style="background-color:#aaa;">
-                    <h2 >{{name[0].username}}</h2>
-                    <!--<h2 contenteditable="true">{{name[0].username}}</h2> -->
-                      <p>You can contact him/her at {{name[0].email}}.</p>
+                    <h2 class="w3-btn" contenteditable="true" >{{name}}</h2>
+                      <form action="servletURL" method="post" onsubmit="this.content.value=document.getElementById('text_box').innerHTML;">
+                        <div id="text_box" contenteditable="true"><br /></div>
+                          <textarea name="content" style="display:none;" />
+                            <input type="submit" />
+                        </form>
+                    <h2 contenteditable="true">{{username}}</h2>
+                      <p>You can contact him/her at {{email}}.</p>
                       <p>Etc</p>
                       <p>Etc</p>
                   </div>

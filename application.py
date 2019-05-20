@@ -1,7 +1,8 @@
 import os
 
 from cs50 import SQL
-from flask import Flask, flash, jsonify, redirect, render_template, request, session
+from flask import Flask, jsonify, redirect, render_template, request, session
+from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions
@@ -15,7 +16,7 @@ import smtplib
 
 from helpers import login_required, apology
 
-lista = [0]
+lista = list()
 
 
 # Configure application - Copied from Problem set 8
@@ -28,8 +29,14 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
-Session(app)
 
+# setting the database directory
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///appeople.db"
+
+Session(app)
+# connecting to the database
+db = SQLAlchemy(app)
+db.Model.metadata.reflect(db.engine)
 # Ensure responses aren't cached - Copied from Problem set 8
 
 
@@ -42,17 +49,61 @@ def after_request(response):
 
 
 # Configure session to use filesystem (instead of signed cookies) - Copied from Problem set 8
-app.config["SESSION_FILE_DIR"] = mkdtemp()
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
+
 Session(app)
 
+
+class User(db.Model):
+    __table__ = db.Model.metadata.tables['users']
+
+    def __init__(self, username, hashword, email):
+        self.username = username
+        self.hashword = hashword
+        self.email = email
+
+class Traits(db.Model):
+    __table__ = db.Model.metadata.tables['traits']
+
+    def __init__(self, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lf10, lf11, lf12, lf13, lf14, lf15, lf16, lf17, lf18, lf19, lf20, lf21, lf22, lf23, lf24, esportes, jogos, eventos, arte, religiao, ar_livre, manuais, estudos, user_id):
+        self.lf1 = lf1
+        self.lf2 = lf2
+        self.lf3 = lf3
+        self.lf4 = lf4
+        self.lf5 = lf5
+        self.lf6 = lf6
+        self.lf7 = lf7
+        self.lf8 = lf8
+        self.lf9 = lf9
+        self.lf10 = lf10
+        self.lf11 = lf11
+        self.lf12 = lf12
+        self.lf13 = lf13
+        self.lf14 = lf14
+        self.lf15 = lf15
+        self.lf16 = lf16
+        self.lf17 = lf17
+        self.lf18 = lf18
+        self.lf19 = lf19
+        self.lf20 = lf20
+        self.lf21 = lf21
+        self.lf22 = lf22
+        self.lf23 = lf23
+        self.lf24 = lf24
+        self.esportes = esportes
+        self.jogos = jogos
+        self.eventos = eventos
+        self.arte = arte
+        self.religiao = religiao
+        self.ar_livre = ar_livre
+        self.manuais = manuais
+        self.estudos = estudos
+        self.user_id = user_id
+
 # Configure CS50 Library to use SQLite database
-db = SQL("sqlite:///appeople.db")
+#db = SQL("sqlite:///appeople.db")
+
 
 # Register new user - Copied from Problem set 8
-
-
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """Register user"""
@@ -64,35 +115,39 @@ def register():
     elif request.method == "POST":
         if not request.form.get("username"):
             return apology("You must provide a username.")
+        else:
+            username = request.form['username']
 
         if not request.form.get("email"):
             return apology("You must provide a valid email.")
+        else:
+            email = request.form['email']
 
         if not request.form.get("password"):
             return apology("You must provide a password.")
+        else:
+            password = request.form['password']
 
         if not request.form.get("confirmation"):
             return apology("You must confirm your password.")
 
-        if request.form.get("password") != request.form.get("confirmation"):
+        if password != request.form.get("confirmation"):
             return apology("Your passwords don't match! Try typing again.")
 
-        users = db.execute("SELECT username FROM users WHERE username = :username", username=request.form.get("username"))
-        if not users:
-            hashword = generate_password_hash(request.form.get("password"))
-            users = db.execute("INSERT INTO users (username, hashword, email) VALUES(:username, :hash, :email)",
-                               username=request.form.get("username"), hash=hashword, email=request.form.get("email"))
-            rows = db.execute("SELECT * FROM users WHERE username = :username",
-                              username=request.form.get("username"))
-            session["user_id"] = rows[0]["user_id"]
+        if not User.query.filter_by(username=username).all():
+
+            user = User(username=username, hashword=generate_password_hash(password), email=email)
+            db.session.add(user)
+            db.session.commit()
+
+            user_id = User.query.filter_by(username=username).first().user_id
+            session["user_id"] = user_id
             return redirect("/index")
 
         elif True:
-            return apology("Username was already taken!")
+            return apology("Username is already taken!")
 
 # Renders our blog page
-
-
 @app.route("/", methods=["GET"])
 def blog():
     return render_template("blog_3.html")
@@ -106,9 +161,29 @@ def lifestyle():
         return render_template("lifestyle.html")
         #session["user_id"]
 
-    if request.method == "POST":
+    elif request.method == "POST":
+        traits_db_fields = ['lf1', 'lf2', 'lf3', 'lf4', 'lf5', 'lf6', 'lf7', 'lf8', 'lf9', 'lf10', 'lf11', 'lf12',
+                            'lf13', 'lf14', 'lf15', 'lf16', 'lf17', 'lf18', 'lf19', 'lf20', 'lf21', 'lf22', 'lf23',
+                            'lf24', 'esportes', 'jogos', 'eventos', 'arte', 'religiao', 'ar_livre', 'manuais',
+                            'estudos']
+        traits_dict = dict()
+        for field in traits_db_fields:
+            response = request.form.get(field)
+            # checks if response exists (not filled in the form)
+            if response:
+                # if response is not "1" , its database value will be response itself
+                if len(response) > 1:
+                    traits_dict[field] = response
+                # on the other hand, it will be True(Boolean)
+                else:
+                    traits_dict[field] = 1
+            # if response doesn't exists, database value will be 0
+            else:
+                traits_dict[field] = 0
 
+        traits_dict['user_id'] = session['user_id']
 
+        """
         if request.form.get("lf1"):
             lf1 = 1
         else:
@@ -128,13 +203,14 @@ def lifestyle():
             lf4 = 1
         else:
             lf4 = 0
-
+        print("\n\n{}\n\n".format(request.form.get("lf5")))
+        print("\n\n{}\n\n".format(request.form.get("esportes")))
         if request.form.get("lf5"):
             lf5 = 1
             esportes = request.form.get("esportes")
         else:
             lf5 = 0
-            esportes = "NULL"
+            esportes = 0
 
         if request.form.get("lf6"):
             lf6 = 1
@@ -244,10 +320,18 @@ def lifestyle():
             lf24 = 1
         else:
             lf24 = 0
+        """
 
         # Checking if user is already in "traits" table or if he is inputing his interests for the first time
-        user = db.execute("SELECT user_id FROM traits where user_id = :user_id", user_id=session["user_id"])
+
+        user = Traits.query.filter_by(user_id=session['user_id']).first()
         if not user:
+
+            traits_entry = Traits(**traits_dict)
+            db.session.add(traits_entry)
+            db.session.commit()
+
+            """
             db.execute("INSERT INTO traits (lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lf10, lf11, lf12, lf13, lf14,"
                        "lf15, lf16 ,lf17, lf18, lf19, lf20, lf21, lf22, lf23, lf24, esportes, jogos, eventos, arte,"
                        " religiao, ar_livre, manuais, estudos, user_id) VALUES (:lf1, :lf2, :lf3, "
@@ -259,8 +343,16 @@ def lifestyle():
                        lf19=lf19, lf20=lf20, lf21=lf21, lf22=lf22, lf23=lf23, lf24=lf24, esportes=esportes, jogos=jogos,
                        eventos=eventos, arte=arte, religiao=religiao, ar_livre=ar_livre, manuais=manuais,
                        estudos=estudos, user_id=session["user_id"])
+            """
             return redirect("/index")
         else:
+            # iterate through keys and values of a dictionary
+            for key, value in traits_dict.items():
+                # setattr(object (observation), attribute, value)
+                setattr(user, key, value)
+            db.session.commit()
+
+            """
             db.execute("UPDATE traits SET lf1=:lf1, lf2=:lf2, lf3=:lf3, lf4=:lf4, lf5=:lf5, lf6=:lf6, lf7=:lf7, "
                        "lf8=:lf8, lf9=:lf9, lf10=:lf10, lf11=:lf11, lf12=:lf12, lf13=:lf13, lf14=:lf14, lf15=:lf15, "
                        "lf16=:lf16, lf17=:lf17, lf18=:lf18, lf19=:lf19, lf20=:lf20, lf21=:lf21, lf22=:lf22, lf23=:lf23, "
@@ -271,6 +363,7 @@ def lifestyle():
                        lf19=lf19, lf20=lf20, lf21=lf21, lf22=lf22, lf23=lf23, lf24=lf24,esportes=esportes, jogos=jogos,
                        eventos=eventos, arte=arte, religiao=religiao, ar_livre=ar_livre, manuais=manuais,
                        estudos=estudos, user_id=session["user_id"])
+            """
             return redirect("/index")
 
 
@@ -283,8 +376,9 @@ def index():
 @app.route("/profile", methods=["GET", "POST"])
 @login_required
 def profile():
-    name = db.execute("SELECT username, email FROM users WHERE user_id=:user_id", user_id=session["user_id"])
-    return render_template("profile.html", name=name)
+    name = User.query.filter_by(user_id=session['user_id']).first().username
+    email = getattr(User.query.filter_by(user_id=session['user_id']).first(), "email")
+    return render_template("profile.html", name=name, email=email)
 
 
 @app.route("/check", methods=["GET"])
@@ -293,17 +387,20 @@ def check():
     #Return true if username available, else false, in JSON format. Copied from Problem Set 8
 
     username = request.args.get("username")
-    rows = db.execute("SELECT * FROM users WHERE username = :username", username=username)
+    rows = User.query.filter_by(username=username).all()
 
     # If inputed username does not have at least 1 character and is not taken
     if len(username) > 1 and not rows:
         return jsonify(True)
-
     else:
         return jsonify(False)
 
 # Login function - copied from Problem set 8
 
+@app.route("/rascunho", methods=["GET", "POST"])
+def rascunho():
+    if request.method == "GET":
+        return render_template("rascunho2.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -320,15 +417,14 @@ def login():
             return apology("must provide password", 403)
 
         # Query database for username
-        rows = db.execute("SELECT * FROM users WHERE username = :username",
-                          username=request.form.get("username"))
+        rows = User.query.filter_by(username=request.form.get("username")).all()
 
         # Ensure username exists and password is correct
-        if len(rows) != 1 or not check_password_hash(rows[0]["hashword"], request.form.get("password")):
+        if len(rows) != 1 or not check_password_hash(rows[0].hashword, request.form.get("password")):
             return apology("invalid username and/or password", 403)
 
         # Remember which user has logged in
-        session["user_id"] = rows[0]["user_id"]
+        session["user_id"] = rows[0].user_id
 
         # Redirect user to home page
         return redirect("/index")
@@ -344,120 +440,44 @@ def match():
     if request.method == "GET":
 
         # Gets the user's data about his interests/lifestyle
-        lf1 = db.execute("SELECT lf1 FROM traits WHERE user_id=:user_id", user_id=session["user_id"])[0]['lf1']
-        lf2 = db.execute("SELECT lf2 FROM traits WHERE user_id=:user_id", user_id=session["user_id"])[0]['lf2']
-        lf3 = db.execute("SELECT lf3 FROM traits WHERE user_id=:user_id", user_id=session["user_id"])[0]['lf3']
-        lf4 = db.execute("SELECT lf4 FROM traits WHERE user_id=:user_id", user_id=session["user_id"])[0]['lf4']
-        lf5 = db.execute("SELECT lf5 FROM traits WHERE user_id=:user_id", user_id=session["user_id"])[0]['lf5']
-        lf6 = db.execute("SELECT lf6 FROM traits WHERE user_id=:user_id", user_id=session["user_id"])[0]['lf6']
-        lf7 = db.execute("SELECT lf7 FROM traits WHERE user_id=:user_id", user_id=session["user_id"])[0]['lf7']
-        lf8 = db.execute("SELECT lf8 FROM traits WHERE user_id=:user_id", user_id=session["user_id"])[0]['lf8']
-        lf9 = db.execute("SELECT lf9 FROM traits WHERE user_id=:user_id", user_id=session["user_id"])[0]['lf9']
-        lf10 = db.execute("SELECT lf10 FROM traits WHERE user_id=:user_id", user_id=session["user_id"])[0]['lf10']
-        lf11 = db.execute("SELECT lf11 FROM traits WHERE user_id=:user_id", user_id=session["user_id"])[0]['lf11']
-        lf12 = db.execute("SELECT lf12 FROM traits WHERE user_id=:user_id", user_id=session["user_id"])[0]['lf12']
-        lf13 = db.execute("SELECT lf13 FROM traits WHERE user_id=:user_id", user_id=session["user_id"])[0]['lf13']
-        lf14 = db.execute("SELECT lf14 FROM traits WHERE user_id=:user_id", user_id=session["user_id"])[0]['lf14']
-        lf15 = db.execute("SELECT lf15 FROM traits WHERE user_id=:user_id", user_id=session["user_id"])[0]['lf15']
-        lf16 = db.execute("SELECT lf16 FROM traits WHERE user_id=:user_id", user_id=session["user_id"])[0]['lf16']
-        lf17 = db.execute("SELECT lf17 FROM traits WHERE user_id=:user_id", user_id=session["user_id"])[0]['lf17']
-        lf18 = db.execute("SELECT lf18 FROM traits WHERE user_id=:user_id", user_id=session["user_id"])[0]['lf18']
-        lf19 = db.execute("SELECT lf19 FROM traits WHERE user_id=:user_id", user_id=session["user_id"])[0]['lf19']
-        lf20 = db.execute("SELECT lf20 FROM traits WHERE user_id=:user_id", user_id=session["user_id"])[0]['lf20']
-        lf21 = db.execute("SELECT lf21 FROM traits WHERE user_id=:user_id", user_id=session["user_id"])[0]['lf21']
-        lf22 = db.execute("SELECT lf22 FROM traits WHERE user_id=:user_id", user_id=session["user_id"])[0]['lf22']
-        lf23 = db.execute("SELECT lf23 FROM traits WHERE user_id=:user_id", user_id=session["user_id"])[0]['lf23']
-        lf24 = db.execute("SELECT lf24 FROM traits WHERE user_id=:user_id", user_id=session["user_id"])[0]['lf24']
+        lf_dict = dict()
+        lifestyle_dict = dict()
+        for i in range(1, 25):
+            lf_key = 'lf{}'.format(i)
+            lf_dict[lf_key] = getattr(Traits.query.filter_by(user_id=session['user_id']).all()[0], lf_key)
 
-        # Creates a list of dicts for every lifestyle item consisting in all the users that have marked the same response
+            # Creates a list of dicts for every lifestyle item consisting in all the users that have marked the same response
+            dicionario={}
+            dicionario[lf_key] = lf_dict[lf_key]
 
-        lifestyle1 = db.execute("SELECT user_id FROM traits WHERE lf1=:lf1", lf1=lf1)
-        lifestyle2 = db.execute("SELECT user_id FROM traits WHERE lf2=:lf2", lf2=lf2)
-        lifestyle3 = db.execute("SELECT user_id FROM traits WHERE lf3=:lf3", lf3=lf3)
-        lifestyle4 = db.execute("SELECT user_id FROM traits WHERE lf4=:lf4", lf4=lf4)
-        lifestyle5 = db.execute("SELECT user_id FROM traits WHERE lf5=:lf5", lf5=lf5)
-        lifestyle6 = db.execute("SELECT user_id FROM traits WHERE lf6=:lf6", lf6=lf6)
-        lifestyle7 = db.execute("SELECT user_id FROM traits WHERE lf7=:lf7", lf7=lf7)
-        lifestyle8 = db.execute("SELECT user_id FROM traits WHERE lf8=:lf8", lf8=lf8)
-        lifestyle9 = db.execute("SELECT user_id FROM traits WHERE lf9=:lf9", lf9=lf9)
-        lifestyle10 = db.execute("SELECT user_id FROM traits WHERE lf10=:lf10", lf10=lf10)
-        lifestyle11 = db.execute("SELECT user_id FROM traits WHERE lf11=:lf11", lf11=lf11)
-        lifestyle12 = db.execute("SELECT user_id FROM traits WHERE lf12=:lf12", lf12=lf12)
-        lifestyle13 = db.execute("SELECT user_id FROM traits WHERE lf13=:lf13", lf13=lf13)
-        lifestyle14 = db.execute("SELECT user_id FROM traits WHERE lf14=:lf14", lf14=lf14)
-        lifestyle15 = db.execute("SELECT user_id FROM traits WHERE lf15=:lf15", lf15=lf15)
-        lifestyle16 = db.execute("SELECT user_id FROM traits WHERE lf16=:lf16", lf16=lf16)
-        lifestyle17 = db.execute("SELECT user_id FROM traits WHERE lf17=:lf17", lf17=lf17)
-        lifestyle18 = db.execute("SELECT user_id FROM traits WHERE lf18=:lf18", lf18=lf18)
-        lifestyle19 = db.execute("SELECT user_id FROM traits WHERE lf19=:lf19", lf19=lf19)
-        lifestyle20 = db.execute("SELECT user_id FROM traits WHERE lf20=:lf20", lf20=lf20)
-        lifestyle21 = db.execute("SELECT user_id FROM traits WHERE lf21=:lf21", lf21=lf21)
-        lifestyle22 = db.execute("SELECT user_id FROM traits WHERE lf22=:lf22", lf22=lf22)
-        lifestyle23 = db.execute("SELECT user_id FROM traits WHERE lf23=:lf23", lf23=lf23)
-        lifestyle24 = db.execute("SELECT user_id FROM traits WHERE lf24=:lf24", lf24=lf24)
+            keys_in_traits = Traits.query.filter_by(**dicionario).all()
 
-        # Appends all those users that had things in common to one list
-        for item in lifestyle1:
-            lista.append(item['user_id'])
-        for item in lifestyle2:
-            lista.append(item['user_id'])
-        for item in lifestyle3:
-            lista.append(item['user_id'])
-        for item in lifestyle4:
-            lista.append(item['user_id'])
-        for item in lifestyle5:
-            lista.append(item['user_id'])
-        for item in lifestyle6:
-            lista.append(item['user_id'])
-        for item in lifestyle7:
-            lista.append(item['user_id'])
-        for item in lifestyle8:
-            lista.append(item['user_id'])
-        for item in lifestyle9:
-            lista.append(item['user_id'])
-        for item in lifestyle10:
-            lista.append(item['user_id'])
-        for item in lifestyle11:
-            lista.append(item['user_id'])
-        for item in lifestyle12:
-            lista.append(item['user_id'])
-        for item in lifestyle13:
-            lista.append(item['user_id'])
-        for item in lifestyle14:
-            lista.append(item['user_id'])
-        for item in lifestyle15:
-            lista.append(item['user_id'])
-        for item in lifestyle16:
-            lista.append(item['user_id'])
-        for item in lifestyle17:
-            lista.append(item['user_id'])
-        for item in lifestyle18:
-            lista.append(item['user_id'])
-        for item in lifestyle19:
-            lista.append(item['user_id'])
-        for item in lifestyle20:
-            lista.append(item['user_id'])
-        for item in lifestyle21:
-            lista.append(item['user_id'])
-        for item in lifestyle22:
-            lista.append(item['user_id'])
-        for item in lifestyle23:
-            lista.append(item['user_id'])
-        for item in lifestyle24:
-            lista.append(item['user_id'])
+            lfkey_user_id = []
+            for key in keys_in_traits:
+                lfkey_user_id.append(key.user_id)
 
-        # Calculating which user appears the most number of times
+            lifestyle_dict[lf_key] = lfkey_user_id
 
-        user_id = session["user_id"]
+            #db.execute("SELECT user_id FROM traits WHERE {}=:parameter".format(lf_key), parameter=lf_dict[lf_key])
+
+            # Appends all those users that had things in common to one list
+            for item in lifestyle_dict[lf_key]:
+                lista.append(item)
 
         # Removes the own user (logged in) from the list
-        nova = [x for x in lista if x != user_id]
-        # Calculates the mode in that list
+        nova = [x for x in lista if x != session["user_id"]]
+
+        # Calculating which user appears the most number of times using the mode in that list
         partner = max(set(nova), key=nova.count)
+
         # Get the user's info based on their user_id
-        name = db.execute("SELECT username, email FROM users WHERE user_id=:user_id", user_id=partner)
+        name = getattr(User.query.filter_by(user_id=partner).first(), "username")
+        email = getattr(User.query.filter_by(user_id=partner).first(), "email")
+
+            #db.execute("SELECT username, email FROM users WHERE user_id=:user_id", user_id=partner)
+
         # Render the results of who is the highest matching person
-        return render_template("to-match.html", name=name)
+        return render_template("to-match.html", name=name, email=email)
 
 
 # Log out function - copied from Problem Set 8

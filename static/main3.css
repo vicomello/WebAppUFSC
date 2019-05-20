@@ -2709,6 +2709,32 @@ html.no-csstransitions .home-content__main {
   text-align: center;
 }
 
+.intLink { cursor: pointer; }
+img.intLink { border: 0; }
+#toolBar1 select { font-size:10px; }
+#textBox {
+  width: 300px;
+  height: 15px;
+  border: 1px #000000 solid;
+  padding: 12px;
+  overflow: scroll;
+}
+
+.w3-btn,.w3-button{
+    border:none;
+    display:inline-block;
+    padding:8px 16px;
+    vertical-align:middle;
+    overflow:hidden;
+    text-decoration:none;
+    color:black;
+    background-color:white;
+    text-align:center;
+    cursor:pointer;
+    white-space:nowrap;
+    box-sizing: 30px;
+}
+
 .align-form{
   text-align: left;
   margin-left: 80px;
