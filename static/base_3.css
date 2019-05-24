@@ -428,8 +428,13 @@ textarea {
 /* column blocks
  * -------------------------------------- */
 [class*="col-"] {
-  margin:auto;
+  margin: auto;
   padding: 0 20px;
+}
+
+.column{
+  padding: 5.4rem 4rem 4.8rem;
+
 }
 
 [class*="col-"] + [class*="col-"].end {

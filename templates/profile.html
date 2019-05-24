@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="static/vendor.css">
     <link rel="stylesheet" href="static/main.css">
     <link rel="stylesheet" href="static/match.css">
-    <link rel="stylesheet" href="static/main3.css">
+    <link rel="stylesheet" href="static/main4.css">
     <link rel="stylesheet" href="static/custom.css">
     <!-- script
     ================================================== -->
@@ -54,25 +54,25 @@
         <div class="align-form">
             <br>
             <div class="column">
-                <div class="row" style="background-color:#aaa;">
-                    <h1>Enter some text</h1>
-                    <form method="post">
-                        <p>Nome: </p><textarea name="name" class="full-width"> {{name}} </textarea>
-                        <p> Idade:</p><textarea name="age"> {{age}} </textarea>
-                        <p> Curso:</p><textarea name="curso"> {{curso}} </textarea>
-                        <p> 3 atividades:</p><textarea name="top_3"> {{top_3}} </textarea>
-                        <p> Pergunta quebra-gelo:</p><textarea name="ice_breaker"> {{ice_breaker}} </textarea>
-                        <p>Sexo:</p><br>
-                        <input type="radio" name="sex" value="1"> Male<br>
-                        <input type="radio" name="sex" value="0"> Female<br>
-                        <input type="radio" name="sex" value="2"> Other <br>
-                        <p>Preferência:</p><br>
-                        <input type="radio" name="sexes" value="1"> Estou aberto(a) a pessoas de todos os sexos<br>
-                        <input type="radio" name="sexes" value="0"> Estou aberto(a) a apenas pessoas do mesmo sexo que o meu.<br>
+                <div class="item-plan__block">
 
-                         <button type="submit" class="button">Submeter</button>
+                        <p>Nome:</p><textarea name="name" class="full-width">{{name}}</textarea>
+                        <p> Idade:</p><textarea name="age" class="full-width">{{age}}</textarea>
+                        <p> Curso:</p><textarea name="curso" class="full-width">{{curso}}</textarea>
+                        <p> 3 atividades:</p><textarea name="top_3" class="full-width">{{top_3}}</textarea>
+                        <p> Pergunta quebra-gelo:</p><textarea name="ice_breaker" class="full-width">{{ice_breaker}}</textarea>
+                        <p>Sexo:</p>
+                        <p><input type="radio" name="sex" value="1">Male
+                        <input type="radio" name="sex" value="0">Female
+                        <input type="radio" name="sex" value="2">Other</p>
+                        <p>Preferência:</p>
+                        <p><input type="radio" name="sexes" value="1"> Estou aberto(a) a conhecer pessoas de todos os sexos. <br>
+                        <input type="radio" name="sexes" value="0"> Estou aberto(a) a conhecer apenas pessoas do mesmo sexo que o meu.</p><br>
+
+                         <button type="submit" class="btn--primary">Submeter</button>
                     </form>
                 </div>
+    </div>
             </div>
         </div>
     </form>
