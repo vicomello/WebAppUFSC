@@ -1,6 +1,6 @@
 {% block main %}
 <!DOCTYPE html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Profile</title>
@@ -12,6 +12,7 @@
     <meta name="viewport" content=s"width=device-width, initial-scale=1">
     <!-- CSS
     ================================================== -->
+    <link rel="stylesheet" href="static/base3.css">
     <link rel="stylesheet" href="static/base.css">
     <link rel="stylesheet" href="static/vendor.css">
     <link rel="stylesheet" href="static/main.css">
@@ -43,32 +44,51 @@
             <a class="header-menu-toggle" href="/index"><span>Menu</span></a>
     </header>
 
+<!--===============================================end of header==================================================-->
     <div class="s-about-2">
     <section>
     <h1> Edit your profile</h1>
 
-    <form class="label" action="/profile" method="POST">
+    <form class="label" action="/profile" method="POST" role="form">
         <!-- form to collect profile info -->
         <div class="align-form">
             <br>
             <div class="column">
-                  <div class="row" style="background-color:#aaa;">
-                    <h2 class="w3-btn" contenteditable="true" >{{name}}</h2>
-                      <form action="servletURL" method="post" onsubmit="this.content.value=document.getElementById('text_box').innerHTML;">
-                        <div id="text_box" contenteditable="true"><br /></div>
-                          <textarea name="content" style="display:none;" />
-                            <input type="submit" />
-                        </form>
-                    <h2 contenteditable="true">{{username}}</h2>
-                      <p>You can contact him/her at {{email}}.</p>
-                      <p>Etc</p>
-                      <p>Etc</p>
-                  </div>
+                <div class="row" style="background-color:#aaa;">
+                    <h1>Enter some text</h1>
+                    <form method="post">
+                        <p>Nome: </p><textarea name="name" class="full-width"> {{name}} </textarea>
+                        <p> Idade:</p><textarea name="age"> {{age}} </textarea>
+                        <p> Curso:</p><textarea name="curso"> {{curso}} </textarea>
+                        <p> 3 atividades:</p><textarea name="top_3"> {{top_3}} </textarea>
+                        <p> Pergunta quebra-gelo:</p><textarea name="ice_breaker"> {{ice_breaker}} </textarea>
+                        <p>Sexo:</p><br>
+                        <input type="radio" name="sex" value="1"> Male<br>
+                        <input type="radio" name="sex" value="0"> Female<br>
+                        <input type="radio" name="sex" value="2"> Other <br>
+                        <p>Preferência:</p><br>
+                        <input type="radio" name="sexes" value="1"> Estou aberto(a) a pessoas de todos os sexos<br>
+                        <input type="radio" name="sexes" value="0"> Estou aberto(a) a apenas pessoas do mesmo sexo que o meu.<br>
+
+                         <button type="submit" class="button">Submeter</button>
+                    </form>
+                </div>
             </div>
         </div>
     </form>
     </section>
     </div>
+
+    <script>
+        function myFunction() {
+        var x = document.getElementById("myTextarea").value;
+        document.getElementById("demo").innerHTML = x;
+        }
+
+
+
+    </script>
+
 
 </body>
 </html>

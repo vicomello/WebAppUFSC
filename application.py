@@ -152,6 +152,12 @@ def register():
 def blog():
     return render_template("blog_3.html")
 
+# Renders index page
+@app.route("/index", methods=["GET", "POST"])
+@login_required
+def index():
+    return render_template("index.html")
+
 
 # Gets data from user lifestyle and interests
 @app.route("/lifestyle", methods=["GET", "POST"])
@@ -159,7 +165,6 @@ def blog():
 def lifestyle():
     if request.method == "GET":
         return render_template("lifestyle.html")
-        #session["user_id"]
 
     elif request.method == "POST":
         traits_db_fields = ['lf1', 'lf2', 'lf3', 'lf4', 'lf5', 'lf6', 'lf7', 'lf8', 'lf9', 'lf10', 'lf11', 'lf12',
@@ -183,145 +188,6 @@ def lifestyle():
 
         traits_dict['user_id'] = session['user_id']
 
-        """
-        if request.form.get("lf1"):
-            lf1 = 1
-        else:
-            lf1 = 0
-
-        if request.form.get("lf2"):
-            lf2 = 1
-        else:
-            lf2 = 0
-
-        if request.form.get("lf3"):
-            lf3 = 1
-        else:
-            lf3 = 0
-
-        if request.form.get("lf4"):
-            lf4 = 1
-        else:
-            lf4 = 0
-        print("\n\n{}\n\n".format(request.form.get("lf5")))
-        print("\n\n{}\n\n".format(request.form.get("esportes")))
-        if request.form.get("lf5"):
-            lf5 = 1
-            esportes = request.form.get("esportes")
-        else:
-            lf5 = 0
-            esportes = 0
-
-        if request.form.get("lf6"):
-            lf6 = 1
-            jogos = request.form.get("jogos")
-        else:
-            lf6 = 0
-            jogos = "NULL"
-
-        if request.form.get("lf7"):
-            lf7 = 1
-            eventos = request.form.get("eventos")
-        else:
-            lf7 = 0
-            eventos = "NULL"
-
-        if request.form.get("lf8"):
-            lf8 = 1
-            arte = request.form.get("arte")
-        else:
-            lf8 = 0
-            arte = "NULL"
-
-        if request.form.get("lf9"):
-            lf9 = 1
-        else:
-            lf9 = 0
-
-        if request.form.get("lf10"):
-            lf10 = 1
-        else:
-            lf10 = 0
-
-        if request.form.get("lf11"):
-            lf11 = 1
-        else:
-            lf11 = 0
-
-        if request.form.get("lf12"):
-            lf12 = 1
-        else:
-            lf12 = 0
-
-        if request.form.get("lf13"):
-            lf13 = 1
-        else:
-            lf13 = 0
-
-        if request.form.get("lf14"):
-            lf14 = 1
-            religiao = request.form.get("religiao")
-        else:
-            lf14 = 0
-            religiao = "NULL"
-
-        if request.form.get("lf15"):
-            lf15 = 1
-        else:
-            lf15 = 0
-
-        if request.form.get("lf16"):
-            lf16 = 1
-        else:
-            lf16 = 0
-
-        if request.form.get("lf17"):
-            lf17 = 1
-        else:
-            lf17 = 0
-
-        if request.form.get("lf18"):
-            lf18 = 1
-            ar_livre = request.form.get("ar_livre")
-        else:
-            lf18 = 0
-            ar_livre = "NULL"
-
-        if request.form.get("lf19"):
-            lf19 = 1
-            manuais = request.form.get("manuais")
-        else:
-            lf19 = 0
-            manuais = "NULL"
-
-        if request.form.get("lf20"):
-            lf20 = 1
-            estudos = request.form.get("estudos")
-        else:
-            lf20 = 0
-            estudos = "NULL"
-
-        if request.form.get("lf21"):
-            lf21 = 1
-        else:
-            lf21 = 0
-
-        if request.form.get("lf22"):
-            lf22 = 1
-        else:
-            lf22 = 0
-
-        if request.form.get("lf23"):
-            lf23 = 1
-        else:
-            lf23 = 0
-
-        if request.form.get("lf24"):
-            lf24 = 1
-        else:
-            lf24 = 0
-        """
-
         # Checking if user is already in "traits" table or if he is inputing his interests for the first time
 
         user = Traits.query.filter_by(user_id=session['user_id']).first()
@@ -331,19 +197,6 @@ def lifestyle():
             db.session.add(traits_entry)
             db.session.commit()
 
-            """
-            db.execute("INSERT INTO traits (lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lf10, lf11, lf12, lf13, lf14,"
-                       "lf15, lf16 ,lf17, lf18, lf19, lf20, lf21, lf22, lf23, lf24, esportes, jogos, eventos, arte,"
-                       " religiao, ar_livre, manuais, estudos, user_id) VALUES (:lf1, :lf2, :lf3, "
-                       ":lf4, :lf5, :lf6, :lf7, :lf8, :lf9, :lf10, :lf11, :lf12, :lf13, :lf14, :lf15,:lf16, :lf17, "
-                       ":lf18, :lf19, :lf20, :lf21, :lf22, :lf23, :lf24, :esportes, :jogos, :eventos, :arte, :religiao, "
-                       ":ar_livre, :manuais, :estudos, :user_id)",
-                       lf1=lf1, lf2=lf2, lf3=lf3, lf4=lf4, lf5=lf5, lf6=lf6, lf7=lf7, lf8=lf8, lf9=lf9, lf10=lf10,
-                       lf11=lf11, lf12=lf12, lf13=lf13, lf14=lf14, lf15=lf15, lf16=lf16, lf17=lf17, lf18=lf18,
-                       lf19=lf19, lf20=lf20, lf21=lf21, lf22=lf22, lf23=lf23, lf24=lf24, esportes=esportes, jogos=jogos,
-                       eventos=eventos, arte=arte, religiao=religiao, ar_livre=ar_livre, manuais=manuais,
-                       estudos=estudos, user_id=session["user_id"])
-            """
             return redirect("/index")
         else:
             # iterate through keys and values of a dictionary
@@ -351,34 +204,55 @@ def lifestyle():
                 # setattr(object (observation), attribute, value)
                 setattr(user, key, value)
             db.session.commit()
-
-            """
-            db.execute("UPDATE traits SET lf1=:lf1, lf2=:lf2, lf3=:lf3, lf4=:lf4, lf5=:lf5, lf6=:lf6, lf7=:lf7, "
-                       "lf8=:lf8, lf9=:lf9, lf10=:lf10, lf11=:lf11, lf12=:lf12, lf13=:lf13, lf14=:lf14, lf15=:lf15, "
-                       "lf16=:lf16, lf17=:lf17, lf18=:lf18, lf19=:lf19, lf20=:lf20, lf21=:lf21, lf22=:lf22, lf23=:lf23, "
-                       "lf24=:lf24, esportes=:esportes, jogos=:jogos, eventos=:eventos, arte=:arte, religiao=:religiao,"
-                       "ar_livre=:ar_livre, manuais=:manuais, estudos=:estudos WHERE user_id= :user_id",
-                       lf1=lf1, lf2=lf2, lf3=lf3, lf4=lf4, lf5=lf5, lf6=lf6, lf7=lf7, lf8=lf8, lf9=lf9, lf10=lf10,
-                       lf11=lf11, lf12=lf12, lf13=lf13, lf14=lf14, lf15=lf15, lf16=lf16, lf17=lf17, lf18=lf18,
-                       lf19=lf19, lf20=lf20, lf21=lf21, lf22=lf22, lf23=lf23, lf24=lf24,esportes=esportes, jogos=jogos,
-                       eventos=eventos, arte=arte, religiao=religiao, ar_livre=ar_livre, manuais=manuais,
-                       estudos=estudos, user_id=session["user_id"])
-            """
             return redirect("/index")
-
-
-# Renders index page
-@app.route("/index", methods=["GET", "POST"])
-@login_required
-def index():
-    return render_template("index.html")
 
 @app.route("/profile", methods=["GET", "POST"])
 @login_required
 def profile():
-    name = User.query.filter_by(user_id=session['user_id']).first().username
-    email = getattr(User.query.filter_by(user_id=session['user_id']).first(), "email")
-    return render_template("profile.html", name=name, email=email)
+
+    if request.method == "GET":
+        name = User.query.filter_by(user_id=session['user_id']).first().name
+        email = User.query.filter_by(user_id=session['user_id']).first().email
+        curso = User.query.filter_by(user_id=session['user_id']).first().curso
+        age = User.query.filter_by(user_id=session['user_id']).first().age
+        sex = User.query.filter_by(user_id=session['user_id']).first().sex
+        top_3 = User.query.filter_by(user_id=session['user_id']).first().top_3
+        ice_breaker = User.query.filter_by(user_id=session['user_id']).first().ice_breaker
+        sexes = User.query.filter_by(user_id=session['user_id']).first().sexes
+
+        return render_template("profile.html", name=name, email=email, curso=curso, age=age, sex=sex, top_3=top_3,
+                               ice_breaker=ice_breaker, sexes=sexes)
+
+    elif request.method == "POST":
+
+        users_new_fields = ['name', 'age', 'sex', 'curso', 'top_3', 'ice_breaker', 'sexes']
+        users_dict = dict()
+
+        for field in users_new_fields:
+            response = request.form.get(field)
+            users_dict[field] = response
+
+        print(users_dict)
+        users_dict['user_id'] = session['user_id']
+        user = User.query.filter_by(user_id=session['user_id']).first()
+
+        for key, value in users_dict.items():
+            setattr(user, key, value)
+        #users_entry = User(**users_dict)
+        #db.session.add(users_entry)
+        db.session.commit()
+
+        name = User.query.filter_by(user_id=session['user_id']).first().name
+        email = User.query.filter_by(user_id=session['user_id']).first().email
+        curso = User.query.filter_by(user_id=session['user_id']).first().curso
+        age = User.query.filter_by(user_id=session['user_id']).first().age
+        sex = User.query.filter_by(user_id=session['user_id']).first().sex
+        top_3 = User.query.filter_by(user_id=session['user_id']).first().top_3
+        ice_breaker = User.query.filter_by(user_id=session['user_id']).first().ice_breaker
+        sexes = User.query.filter_by(user_id=session['user_id']).first().sexes
+
+        return render_template("profile.html", name=name, email=email, curso=curso, age=age, sex=sex, top_3=top_3,
+                               ice_breaker=ice_breaker, sexes=sexes)
 
 
 @app.route("/check", methods=["GET"])
