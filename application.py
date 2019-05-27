@@ -17,6 +17,7 @@ import smtplib
 from helpers import login_required, apology
 
 lista = list()
+#preferences = list()
 
 
 # Configure application - Copied from Problem set 8
@@ -60,6 +61,43 @@ class User(db.Model):
         self.username = username
         self.hashword = hashword
         self.email = email
+
+class Itens(db.Model):
+    __table__ = db.Model.metadata.tables['itens']
+
+    def __init__(self, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lf10, lf11, lf12, lf13, lf14, lf15, lf16, lf17, lf18, lf19, lf20, lf21, lf22, lf23, lf24, esportes, jogos, eventos, arte, religiao, ar_livre, manuais, estudos):
+        self.lf1 = lf1
+        self.lf2 = lf2
+        self.lf3 = lf3
+        self.lf4 = lf4
+        self.lf5 = lf5
+        self.lf6 = lf6
+        self.lf7 = lf7
+        self.lf8 = lf8
+        self.lf9 = lf9
+        self.lf10 = lf10
+        self.lf11 = lf11
+        self.lf12 = lf12
+        self.lf13 = lf13
+        self.lf14 = lf14
+        self.lf15 = lf15
+        self.lf16 = lf16
+        self.lf17 = lf17
+        self.lf18 = lf18
+        self.lf19 = lf19
+        self.lf20 = lf20
+        self.lf21 = lf21
+        self.lf22 = lf22
+        self.lf23 = lf23
+        self.lf24 = lf24
+        self.esportes = esportes
+        self.jogos = jogos
+        self.eventos = eventos
+        self.arte = arte
+        self.religiao = religiao
+        self.ar_livre = ar_livre
+        self.manuais = manuais
+        self.estudos = estudos
 
 class Traits(db.Model):
     __table__ = db.Model.metadata.tables['traits']
@@ -232,7 +270,6 @@ def profile():
             response = request.form.get(field)
             users_dict[field] = response
 
-        print(users_dict)
         users_dict['user_id'] = session['user_id']
         user = User.query.filter_by(user_id=session['user_id']).first()
 
@@ -250,6 +287,9 @@ def profile():
         top_3 = User.query.filter_by(user_id=session['user_id']).first().top_3
         ice_breaker = User.query.filter_by(user_id=session['user_id']).first().ice_breaker
         sexes = User.query.filter_by(user_id=session['user_id']).first().sexes
+
+        print(name, email, curso, age, sex, top_3, ice_breaker, sexes)
+        #print(preferences)
 
         return render_template("profile.html", name=name, email=email, curso=curso, age=age, sex=sex, top_3=top_3,
                                ice_breaker=ice_breaker, sexes=sexes)
