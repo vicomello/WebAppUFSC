@@ -17,7 +17,10 @@ import smtplib
 from helpers import login_required, apology
 
 lista = list()
-#preferences = list()
+traits_db_fields = ['lf1', 'lf2', 'lf3', 'lf4', 'lf5', 'lf6', 'lf7', 'lf8', 'lf9', 'lf10', 'lf11', 'lf12',
+                            'lf13', 'lf14', 'lf15', 'lf16', 'lf17', 'lf18', 'lf19', 'lf20', 'lf21', 'lf22', 'lf23',
+                            'lf24', 'esportes', 'jogos', 'eventos', 'arte', 'religiao', 'ar_livre', 'manuais',
+                            'estudos']
 
 
 # Configure application - Copied from Problem set 8
@@ -137,9 +140,6 @@ class Traits(db.Model):
         self.estudos = estudos
         self.user_id = user_id
 
-# Configure CS50 Library to use SQLite database
-#db = SQL("sqlite:///appeople.db")
-
 
 # Register new user - Copied from Problem set 8
 @app.route("/register", methods=["GET", "POST"])
@@ -205,10 +205,10 @@ def lifestyle():
         return render_template("lifestyle.html")
 
     elif request.method == "POST":
-        traits_db_fields = ['lf1', 'lf2', 'lf3', 'lf4', 'lf5', 'lf6', 'lf7', 'lf8', 'lf9', 'lf10', 'lf11', 'lf12',
+        """traits_db_fields = ['lf1', 'lf2', 'lf3', 'lf4', 'lf5', 'lf6', 'lf7', 'lf8', 'lf9', 'lf10', 'lf11', 'lf12',
                             'lf13', 'lf14', 'lf15', 'lf16', 'lf17', 'lf18', 'lf19', 'lf20', 'lf21', 'lf22', 'lf23',
                             'lf24', 'esportes', 'jogos', 'eventos', 'arte', 'religiao', 'ar_livre', 'manuais',
-                            'estudos']
+                            'estudos']"""
         traits_dict = dict()
         for field in traits_db_fields:
             response = request.form.get(field)
@@ -249,50 +249,69 @@ def lifestyle():
 def profile():
 
     if request.method == "GET":
-        name = User.query.filter_by(user_id=session['user_id']).first().name
-        email = User.query.filter_by(user_id=session['user_id']).first().email
-        curso = User.query.filter_by(user_id=session['user_id']).first().curso
-        age = User.query.filter_by(user_id=session['user_id']).first().age
-        sex = User.query.filter_by(user_id=session['user_id']).first().sex
-        top_3 = User.query.filter_by(user_id=session['user_id']).first().top_3
-        ice_breaker = User.query.filter_by(user_id=session['user_id']).first().ice_breaker
-        sexes = User.query.filter_by(user_id=session['user_id']).first().sexes
+        users_new_fields = ['name', 'age', 'sex', 'curso', 'top_1', 'top_2', 'top_3', 'ice_breaker', 'sexes']
 
-        return render_template("profile.html", name=name, email=email, curso=curso, age=age, sex=sex, top_3=top_3,
-                               ice_breaker=ice_breaker, sexes=sexes)
+
+        # auxilary dictionary
+        users_dict = dict()
+
+        query = User.query.filter_by(user_id=session['user_id']).first()
+        for field in users_new_fields:
+            users_dict[field] = getattr(query, field)
+
+
+        query_traits = Traits.query.filter_by(user_id=session['user_id']).first()
+        query_itens = Itens.query.first()
+        questions = dict()
+
+        for element in traits_db_fields:
+            if getattr(query_traits, element) is True:
+                    questions[element] = getattr(query_itens, element)
+
+        marked = questions.values()
+        print("\n\n\n\n\n")
+        print(marked)
+        print("\n\n\n\n\n")
+
+        return render_template("profile.html", **users_dict, marked=marked)
 
     elif request.method == "POST":
 
-        users_new_fields = ['name', 'age', 'sex', 'curso', 'top_3', 'ice_breaker', 'sexes']
+        # list of reference for fields used
+        users_new_fields = ['name', 'age', 'sex', 'curso', 'top_1', 'top_2', 'top_3', 'ice_breaker', 'sexes']
+
+
+        # auxilary dictionary
         users_dict = dict()
 
         for field in users_new_fields:
             response = request.form.get(field)
             users_dict[field] = response
 
+        print(users_dict)
+
         users_dict['user_id'] = session['user_id']
         user = User.query.filter_by(user_id=session['user_id']).first()
 
         for key, value in users_dict.items():
             setattr(user, key, value)
-        #users_entry = User(**users_dict)
-        #db.session.add(users_entry)
         db.session.commit()
 
-        name = User.query.filter_by(user_id=session['user_id']).first().name
-        email = User.query.filter_by(user_id=session['user_id']).first().email
-        curso = User.query.filter_by(user_id=session['user_id']).first().curso
-        age = User.query.filter_by(user_id=session['user_id']).first().age
-        sex = User.query.filter_by(user_id=session['user_id']).first().sex
-        top_3 = User.query.filter_by(user_id=session['user_id']).first().top_3
-        ice_breaker = User.query.filter_by(user_id=session['user_id']).first().ice_breaker
-        sexes = User.query.filter_by(user_id=session['user_id']).first().sexes
+        query = User.query.filter_by(user_id=session['user_id']).first()
+        for field in users_new_fields:
+            users_dict[field] = getattr(query, field)
 
-        print(name, email, curso, age, sex, top_3, ice_breaker, sexes)
-        #print(preferences)
+        questions = dict()
+        query_traits = Traits.query.filter_by(user_id=session['user_id']).first()
+        query_itens = Itens.query.first()
 
-        return render_template("profile.html", name=name, email=email, curso=curso, age=age, sex=sex, top_3=top_3,
-                               ice_breaker=ice_breaker, sexes=sexes)
+        for element in traits_db_fields:
+            if getattr(query_traits, element) is True:
+                questions[element] = getattr(query_itens, element)
+
+        marked = questions.values()
+
+        return render_template("profile.html", **users_dict, marked=marked)
 
 
 @app.route("/check", methods=["GET"])

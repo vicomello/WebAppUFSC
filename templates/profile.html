@@ -60,23 +60,42 @@
                         <p> Idade:</p><textarea name="age" class="full-width">{{age}}</textarea>
                         <p> Curso:</p><textarea name="curso" class="full-width">{{curso}}</textarea>
                         <p> 3 atividades:</p>
-                    <select name="top_1" class="full-width">
-                        <option>{{top_1}}</option>
+                    <select name="top_1" class="full-width" value={{top_1}}>
+                        {% for item in marked %}
+                        <option> {{ item }}</option>
+                        {% endfor %}
                     </select>
                     <select name="top_2" class="full-width">
-                        <option>{{top_2}}</option>
+                        {% for item in marked %}
+                        <option value="{{item}}"> {{ item }}</option>
+                        {% endfor %}
                     </select>
                     <select name="top_3" class="full-width">
-                        <option>{{top_3}}</option>
+                        {% for item in marked %}
+                        <option value="{{item}}"> {{ item }}</option>
+                        {% endfor %}
                     </select>
                         <p> Pergunta quebra-gelo:</p><textarea name="ice_breaker" class="full-width">{{ice_breaker}}</textarea>
                         <p>Sexo:</p>
-                        <p><input type="radio" name="sex" value="1">Male
-                        <input type="radio" name="sex" value="0">Female
-                        <input type="radio" name="sex" value="2">Other</p>
+                    {% if sex == 0 %}
+                        {% set femalechecked = 'checked' %}
+                    {% elif sex == 1 %}
+                        {% set malechecked = 'checked' %}
+                    {% else %}
+                        {% set otherchecked = 'checked' %}
+                    {% endif %}
+                        <p><input type="radio" name="sex" value="1" {{malechecked}}>Male
+                        <input type="radio" name="sex" value="0" {{femalechecked}}>Female
+                        <input type="radio" name="sex" value="2"{{otherchecked}}>Other</p>
                         <p>Preferência:</p>
-                        <p><input type="radio" name="sexes" value="1"> Estou aberto(a) a conhecer pessoas de todos os sexos. <br>
-                        <input type="radio" name="sexes" value="0"> Estou aberto(a) a conhecer apenas pessoas do mesmo sexo que o meu.</p><br>
+                    {% if sexes == 1 %}
+                        {% set aberto = 'checked' %}
+                    {% else %}
+                        {% set fechado = 'checked' %}
+                    {% endif %}
+
+                        <p><input type="radio" name="sexes" value="1"{{aberto}}> Estou aberto(a) a conhecer pessoas de todos os sexos. <br>
+                        <input type="radio" name="sexes" value="0"{{fechado}}> Estou aberto(a) a conhecer apenas pessoas do mesmo sexo que o meu.</p><br>
 
                          <button type="submit" class="btn--primary">Submeter</button>
                     </form>
