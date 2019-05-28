@@ -108,7 +108,7 @@ body {
  * ## links
  * ------------------------------------------------------------------- */
 a {
-  color: #c90016;
+  color: #003893;
   -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
@@ -415,7 +415,7 @@ ul.disc li::before {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #c90016;
+  background: #003893;
   position: absolute;
   left: -16px;
   top: 11px;
@@ -424,7 +424,7 @@ ul.disc li::before {
 
 dt {
   margin: 0;
-  color: #c90016;
+  color: #003893;
 }
 
 dd {
@@ -544,7 +544,7 @@ form,
 }
 
 .pace .pace-progress {
-  background: #c90016;
+  background: #003893;
   position: fixed;
   z-index: 900;
   top: 0;
@@ -588,7 +588,7 @@ form,
   margin-left: -30px;
   margin-top: -30px;
   padding: 0;
-  background-color: #c90016;
+  background-color: #003893;
   border-radius: 100%;
   -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
   animation: sk-scaleout 1.0s infinite ease-in-out;
@@ -699,7 +699,7 @@ textarea:focus,
 select:focus {
   color: #000000;
   box-shadow: 0 0 5px rgba(0, 166, 80, 0.8);
-  border: 1px solid #c90016;
+  border: 1px solid #003893;
 }
 
 label,
@@ -790,7 +790,7 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-  -webkit-text-fill-color: #c90016;
+  -webkit-text-fill-color: #003893;
   transition: background-color 5000s ease-in-out 0s;
 }
 
@@ -849,8 +849,8 @@ button.btn--primary,
 input[type="submit"].btn--primary,
 input[type="reset"].btn--primary,
 input[type="button"].btn--primary {
-  background: #c90016;
-  border-color: #c90016;
+  background: #003893;
+  border-color: #003893;
   color: #FFFFFF;
 }
 
@@ -1138,7 +1138,7 @@ mark {
 }
 
 .stats-tabs li a:hover {
-  color: #c90016;
+  color: #003893;
 }
 
 .stats-tabs li a em {
@@ -1336,7 +1336,7 @@ mark {
 
 .pgn .current,
 .pgn .current:hover {
-  background-color: #c90016;
+  background-color: #003893;
   color: white;
 }
 
@@ -1451,7 +1451,7 @@ mark {
 
 .subhead {
   margin-top: 0;
-  color: #c90016;
+  color: #003893;
   font-size: 2.4rem;
   line-height: 1.1667;
   margin-bottom: .8rem;
@@ -1478,7 +1478,7 @@ mark {
   display: inline-block;
   height: 1px;
   width: 320px;
-  background-color: #c90016;
+  background-color: #003893;
   position: absolute;
   bottom: 0;
   left: 50%;
@@ -1542,7 +1542,7 @@ mark {
 
 .slick-slider .slick-dots li.slick-active button,
 .slick-slider .slick-dots li:hover button {
-  background: #c90016;
+  background: #003893;
 }
 
 /* -------------------------------------------------------------------
@@ -1710,11 +1710,11 @@ mark {
 
 .header-nav-wrap .header-main-nav li a:hover,
 .header-nav-wrap .header-main-nav li a:focus {
-  color: #c90016;
+  color: #003893;
 }
 
 .header-nav-wrap .header-main-nav li.current a {
-  color: #c90016;
+  color: #003893;
 }
 
 .header-nav-wrap .header-social {
@@ -1749,7 +1749,7 @@ mark {
 
 .header-nav-wrap .header-social li a:hover,
 .header-nav-wrap .header-social li a:focus {
-  background-color: #c90016;
+  background-color: #003893;
 }
 
 .s-header--blog .header-social li a {
@@ -2139,10 +2139,10 @@ img {
 body {
   background: #0e1113;
   /* fallback for old browsers */
-  /*background: -webkit-linear-gradient(to top, #c90016, #c90016);
-  background: -moz-linear-gradient(to top, #c90016, #c90016);
-  background: -o-linear-gradient(to top, #c90016, #c90016);
-  background: linear-gradient(to top, #c90016, #c90016); */
+  /*background: -webkit-linear-gradient(to top, #003893, #003893);
+  background: -moz-linear-gradient(to top, #003893, #003893);
+  background: -o-linear-gradient(to top, #003893, #003893);
+  background: linear-gradient(to top, #003893, #003893); */
   background-size: cover;
   background-attachment: fixed;
   font-family: 'Roboto', sans-serif;
@@ -2237,9 +2237,9 @@ input.email, input.text.w3lpass {
 
 input[type="submit"] {
   color: #fff;
-  background: #c90016;
+  background: #003893;
   outline: none;
-  border: 1px solid #c90016;
+  border: 1px solid #003893;
   cursor: pointer;
   -webkit-appearance: none;
   width: 100%;
@@ -2251,7 +2251,7 @@ input[type="submit"]:hover {
   -o-transition: .5s all;
   -ms-transition: .5s all;
   transition: .5s all;
-  background: #c90016;
+  background: #003893;
 }
 
 .agileits-top p {
@@ -2271,7 +2271,7 @@ input[type="submit"]:hover {
 }
 
 .agileits-top p a:hover {
-  color: #c90016;
+  color: #003893;
 }
 
 /*-- //main --*/
@@ -2285,7 +2285,7 @@ input[type="submit"]:hover {
 }
 
 input.checkbox {
-  background: #c90016;
+  background: #003893;
   cursor: pointer;
   width: 1.2em;
   height: 1.2em;
