@@ -269,9 +269,6 @@ def profile():
                     questions[element] = getattr(query_itens, element)
 
         marked = questions.values()
-        print("\n\n\n\n\n")
-        print(marked)
-        print("\n\n\n\n\n")
 
         return render_template("profile.html", **users_dict, marked=marked)
 
@@ -280,7 +277,6 @@ def profile():
         # list of reference for fields used
         users_new_fields = ['name', 'age', 'sex', 'curso', 'top_1', 'top_2', 'top_3', 'ice_breaker', 'sexes']
 
-
         # auxilary dictionary
         users_dict = dict()
 
@@ -288,7 +284,6 @@ def profile():
             response = request.form.get(field)
             users_dict[field] = response
 
-        print(users_dict)
 
         users_dict['user_id'] = session['user_id']
         user = User.query.filter_by(user_id=session['user_id']).first()
@@ -404,13 +399,24 @@ def match():
         partner = max(set(nova), key=nova.count)
 
         # Get the user's info based on their user_id
-        name = getattr(User.query.filter_by(user_id=partner).first(), "username")
-        email = getattr(User.query.filter_by(user_id=partner).first(), "email")
 
-            #db.execute("SELECT username, email FROM users WHERE user_id=:user_id", user_id=partner)
+
+        # creating empty dict
+        questions = dict()
+
+        # getting info from partner
+        query = User.query.filter_by(user_id=partner).first()
+
+        # can we make this a global variable somehow?
+        users_new_fields = ['username', 'email','name', 'age', 'sex', 'curso', 'top_1', 'top_2', 'top_3', 'ice_breaker', 'sexes']
+
+        for field in users_new_fields:
+            questions[field] = getattr(query, field)
+
+        print(questions)
 
         # Render the results of who is the highest matching person
-        return render_template("to-match.html", name=name, email=email)
+        return render_template("to-match.html", **questions)
 
 
 # Log out function - copied from Problem Set 8

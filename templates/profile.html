@@ -59,20 +59,30 @@
                         <p>Nome:</p><textarea name="name" class="full-width">{{name}}</textarea>
                         <p> Idade:</p><textarea name="age" class="full-width">{{age}}</textarea>
                         <p> Curso:</p><textarea name="curso" class="full-width">{{curso}}</textarea>
-                        <p> 3 atividades:</p>
+                        <p> Selecione as três atividades para as quais você mais </p>
+
                     <select name="top_1" class="full-width" value={{top_1}}>
                         {% for item in marked %}
-                        <option> {{ item }}</option>
+                            {% if top_1 == item %}
+                            {% set selected1 = 'selected' %}
+                            {% endif %}
+                        <option {{selected1}}> {{ item }}</option>
                         {% endfor %}
                     </select>
                     <select name="top_2" class="full-width">
                         {% for item in marked %}
-                        <option value="{{item}}"> {{ item }}</option>
+                            {% if top_2 == item %}
+                            {% set selected2 = 'selected' %}
+                            {% endif %}
+                        <option value="{{item}}" {{selected2}}> {{ item }}</option>
                         {% endfor %}
                     </select>
                     <select name="top_3" class="full-width">
                         {% for item in marked %}
-                        <option value="{{item}}"> {{ item }}</option>
+                            {% if top_3 == item %}
+                            {% set selected3 = 'selected' %}
+                            {% endif %}
+                        <option value="{{item}}" {{selected3}}> {{ item }}</option>
                         {% endfor %}
                     </select>
                         <p> Pergunta quebra-gelo:</p><textarea name="ice_breaker" class="full-width">{{ice_breaker}}</textarea>

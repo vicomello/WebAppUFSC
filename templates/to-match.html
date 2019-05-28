@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="static/custom.css">
     <link rel="stylesheet" href="static/vendor.css">
     <link rel="stylesheet" href="static/base.css">
+    <link rel="stylesheet" href="static/base_3.css">
     <link rel="stylesheet" href="static/match.css">
 </head>
 
@@ -48,11 +49,15 @@
         <!--todo-->
             <br>
             <div class="column">
-                  <div class="row" style="background-color:#aaa;">
+                <div class="item-plan__block">
+                  <div class="row">
                     <h2>{{ name }}</h2>
-                      <p>You can contact him/her at {{email}}.</p>
-                      <p>Etc</p>
-                      <p>Etc</p>
+                      <h5>Email: {{email}}.</h5>
+                      <h5>Curso:{{curso}}</h5>
+                      <h5>Idade: {{age}}</h5>
+                      <h5>Top 1: {{top_1}}</h5>
+                      <h5>Top 2: {{top_2}}</h5>
+                      <h5>Top 3: {{top_3}}</h5>
                   </div>
                   <div class="row" style="background-color:#bbb;">
                     <h2>Column 2</h2>
@@ -66,6 +71,7 @@
                     <h2>Column 4</h2>
                     <p>Some text..</p>
                   </div>
+                </div>
             </div>
 
 <script>
