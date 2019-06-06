@@ -60,8 +60,9 @@
                         <p> Idade:</p><textarea name="age" class="full-width">{{age}}</textarea>
                         <p> Curso:</p><textarea name="curso" class="full-width">{{curso}}</textarea>
                         <p> Link do perfil no facebook:</p><textarea name="facebook" class="full-width">{{facebook}}</textarea>
-                        <p> Selecione as três atividades para as quais você mais (até 3)</p>
+                        <p> Selecione até três atividades para as quais você mais gostaria de encontrar pessoas</p>
 
+                    <p> Atividade 1:</p>
                     <select name="top_1" class="full-width" value={{top_1}}>
                         {% for item in marked %}
                             {% if top_1 == item %}
@@ -70,10 +71,10 @@
                         <option {{selected1}}> {{ item }}</option>
                         {% endfor %}
                     </select>
-                    <select name="top_1_item" class="" value="{{top_1_item}}">
-                        <option>{{top_1_item}}</option>
-                    </select>
+                    <textarea name="top_1_item" class="">{{top_1_item}}</textarea>
+                    <label>Detalhar atividade (opcional):</label> <textarea name="top_1_detail" class="full-width">{{top_1_detail}}</textarea>
 
+                    <p> Atividade 2:</p>
                     <select name="top_2" class="full-width">
                         {% for item in marked %}
                             {% if top_2 == item %}
@@ -82,6 +83,9 @@
                         <option value="{{item}}" {{selected2}}> {{ item }}</option>
                         {% endfor %}
                     </select>
+                    <textarea name="top_2_item" class="">{{top_2_item}}</textarea>
+                    <label>Detalhar atividade (opcional):</label> <textarea name="top_2_detail" class="full-width">{{top_2_detail}}</textarea>
+                    <p> Atividade 3:</p>
                     <select name="top_3" class="full-width">
                         {% for item in marked %}
                             {% if top_3 == item %}
@@ -90,6 +94,8 @@
                         <option value="{{item}}" {{selected3}}> {{ item }}</option>
                         {% endfor %}
                     </select>
+                    <textarea name="top_3_item" class="">{{top_3_item}}</textarea>
+                    <label>Detalhar atividade (opcional):</label> <textarea name="top_3_detail" class="full-width">{{top_3_detail}}</textarea>
                         <p> Pergunta quebra-gelo:</p><textarea name="ice_breaker" class="full-width">{{ice_breaker}}</textarea>
                         <p>Sexo:</p>
                     {% if sex == 0 %}

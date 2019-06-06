@@ -227,16 +227,30 @@ def lifestyle():
 
         questions = dict()
 
-        for item in traits_db_fields:
-            questions[item] = getattr(query, item)
+        if query:
+            for item in traits_db_fields:
+                questions[item] = getattr(query, item)
+        else:
+            for item in traits_db_fields:
+                questions[item] = 0
 
-        return render_template("lifestyle.html", **questions)
+
+        sports = ['futebol', 'vôlei', 'handebol', 'basquete', 'tênis', 'corrida', 'musculação', 'surf', 'natação', 'outro']
+        games = ['League of Legends', 'Dota', 'WOW', 'CS', 'Outro']
+        events = ['Shows', 'Teatro', 'Exposições de Arte', 'Performances de Dança', 'Cinema', 'Outro']
+        art = ['Música', 'Artes Visuais', 'Dança', 'Fotografia', 'Literatura', 'Teatro']
+        religion = ['Missa Católica', 'Centro Espírita', 'Outro']
+        air = ['trilhas', 'acampar', 'meditar', 'outro']
+        manuals = ['jardinagem', 'marcenaria', 'outro']
+        studies = ['estudos em ciências sociais', 'estudos em ciências exatas', 'estudos em literatura', 'estudos sobre arte', 'estudos em línguas estrangeiras', 'outro']
+
+
+
+        return render_template("lifestyle.html", **questions, sports=sports, games=games, events=events, art=art,
+                               religion=religion, air=air, manuals=manuals, studies=studies)
 
     elif request.method == "POST":
-        """traits_db_fields = ['lf1', 'lf2', 'lf3', 'lf4', 'lf5', 'lf6', 'lf7', 'lf8', 'lf9', 'lf10', 'lf11', 'lf12',
-                            'lf13', 'lf14', 'lf15', 'lf16', 'lf17', 'lf18', 'lf19', 'lf20', 'lf21', 'lf22', 'lf23',
-                            'lf24', 'esportes', 'jogos', 'eventos', 'arte', 'religiao', 'ar_livre', 'manuais',
-                            'estudos']"""
+
         traits_dict = dict()
         for field in traits_db_fields:
             response = request.form.get(field)
@@ -263,14 +277,13 @@ def lifestyle():
             db.session.add(traits_entry)
             db.session.commit()
 
-            return redirect("/index")
         else:
             # iterate through keys and values of a dictionary
             for key, value in traits_dict.items():
                 # setattr(object (observation), attribute, value)
                 setattr(user, key, value)
             db.session.commit()
-            return redirect("/index")
+        return redirect("/index")
 
 @app.route("/profile", methods=["GET", "POST"])
 @login_required
@@ -278,24 +291,33 @@ def profile():
 
     if request.method == "GET":
 
-        # fields that the user will have to fill
+        # fields that the user will have to fill in profile page
         users_new_fields = ['name', 'age', 'sex', 'curso', 'top_1', 'top_2', 'top_3', 'ice_breaker', 'sexes',
                             'facebook']
 
+        # dict to store the values that come from db and to render in profile
         users_dict = dict()
 
+        # Querying from 3 different tables
         query = User.query.filter_by(user_id=session['user_id']).first()
         query_traits = Traits.query.filter_by(user_id=session['user_id']).first()
+        query_itens = Itens.query.first()
 
+        # Storing data from table users into dict to display at profile
         for field in users_new_fields:
             users_dict[field] = getattr(query, field)
 
-        query_itens = Itens.query.first()
+        # This dict stores the questions related to each item. E.g.: lf1 = "Praticar esportes".
         questions = dict()
 
-        # List to store the 3 qualitative values collected via dropdown list from top 3 activities
+        # This is getting the items the user checked and turning it into the sentences to display
+        for element in traits_db_fields:
+            if getattr(query_traits, element) is True:
+                questions[element] = getattr(query_itens, element)
 
+        marked = questions.values()
 
+        # This dict serves as db to check either an item has description or not
         item_description_dict = {
                 "Praticar esportes": 'esportes',
                 "Jogar jogos eletrônicos": 'jogos',
@@ -310,29 +332,24 @@ def profile():
         # Dictionaire to store the values from the users interests description (e.x.: tênis)
         qualitative_descriptions = dict()
 
-        # creating list to iterate through
+        # creating list to iterate through (number 0 won't go)
         qualitative_list = ["trash", "top_1_item", "top_2_item", "top_3_item"]
 
+        # Iterating through dict to store the values the user has selected as top 3 activities
         for i in range(1, 4):
             qualitative_descriptions[qualitative_list[i]] = getattr(query, 'top_{}'.format(i))
 
+        # Creating list for values in the dict
         values_quali_list = list(qualitative_descriptions.values())
 
+        # Dict to store the final descriptive interests (top_1_item, etc)
         dict_of_quali = dict()
 
+        # Iterating through list of user top 3 preferences to get final top_1_item and store in a dict (e.x.: tênis)
         for j in range(0, 3):
             if values_quali_list[j] in item_description_dict.keys():
                 preferencia = item_description_dict[values_quali_list[j]]
                 dict_of_quali['top_{}_item'.format(j+1)] = getattr(query_traits, preferencia)
-
-        print(dict_of_quali)
-
-        # This is getting the items the user checked and turning it into the sentences to display
-        for element in traits_db_fields:
-            if getattr(query_traits, element) is True:
-                questions[element] = getattr(query_itens, element)
-
-        marked = questions.values()
 
         return render_template("profile.html", **users_dict, marked=marked, **dict_of_quali)
 
@@ -341,20 +358,12 @@ def profile():
         # list of reference for fields used
         users_new_fields = ['name', 'age', 'sex', 'curso', 'top_1', 'top_2', 'top_3', 'ice_breaker', 'sexes','facebook']
 
-        #'top_1_item', 'top_2_item', 'top_3_item'
-
         # auxilary dictionary
         users_dict = dict()
 
         for field in users_new_fields:
             response = request.form.get(field)
             users_dict[field] = response
-
-        print("users_dict:")
-        print(users_dict)
-
-        details_dict = dict()
-        query_itens = Itens.query.first()
 
         users_dict['user_id'] = session['user_id']
         user = User.query.filter_by(user_id=session['user_id']).first()
@@ -377,7 +386,41 @@ def profile():
 
         marked = questions.values()
 
-        return render_template("profile.html", **users_dict, marked=marked)
+        # This dict serves as db to check either an item has description or not
+        item_description_dict = {
+            "Praticar esportes": 'esportes',
+            "Jogar jogos eletrônicos": 'jogos',
+            "Ir a eventos relacionados a arte": 'eventos',
+            "Produzir arte comigo": 'arte',
+            "Ir a eventos religiosos (culto, missa, etc)": 'religiao',
+            "Realizar atividades ao ar livre": 'ar_livre',
+            "Fazer trabalhos manuais": 'manuais',
+            "Criar grupos de conversa ou de estudos": 'estudos'
+        }
+
+        # Dictionaire to store the values from the users interests description (e.x.: tênis)
+        qualitative_descriptions = dict()
+
+        # creating list to iterate through (number 0 won't go)
+        qualitative_list = ["trash", "top_1_item", "top_2_item", "top_3_item"]
+
+        # Iterating through dict to store the values the user has selected as top 3 activities
+        for i in range(1, 4):
+            qualitative_descriptions[qualitative_list[i]] = getattr(query, 'top_{}'.format(i))
+
+        # Creating list for values in the dict
+        values_quali_list = list(qualitative_descriptions.values())
+
+        # Dict to store the final descriptive interests (top_1_item, etc)
+        dict_of_quali = dict()
+
+        # Iterating through list of user top 3 preferences to get final top_1_item and store in a dict (e.x.: tênis)
+        for j in range(0, 3):
+            if values_quali_list[j] in item_description_dict.keys():
+                preferencia = item_description_dict[values_quali_list[j]]
+                dict_of_quali['top_{}_item'.format(j + 1)] = getattr(query_traits, preferencia)
+
+        return render_template("profile.html", **users_dict, marked=marked, **dict_of_quali)
 
 
 @app.route("/check", methods=["GET"])

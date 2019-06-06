@@ -175,46 +175,43 @@
             <input type="checkbox" name="lf4" value="1" {{selected4}}> Compartilhar interesses sobre livros e literatura.<br>
             <input type="checkbox" name="lf5" value="1" {{selected5}}> Praticar esportes.
             <select name="esportes" class="btn-2 btn--primary">
-                <option value="" disabled selected>Especifique</option>
-                <option value="Futebol">Futebol</option>
-                <option value="Vôlei">Vôlei</option>
-                <option value="Handebol">Handebol</option>
-                <option value="Basquete">Basquete</option>
-                <option value="Tênis">Tênis</option>
-                <option value="Corrida">Corrida</option>
-                <option value="Musculação">Musculação</option>
-                <option value="Surf">Surf</option>
-                <option value="Natação">Natação</option>
-                <option value="Outro">Outro</option>
+                <option disabled>Especifique</option>
+                {% for item in sports %}
+                    {% if esportes == item %}
+                    {% set selected1 = 'selected' %}
+                    {% endif %}
+                <option {{selected1}}> {{ item }}</option>
+                {% endfor %}
             </select><br>
             <input type="checkbox" name="lf6" value="1" {{selected6}}> Jogar jogos eletrônicos.
             <select name="jogos" class="btn-2 btn--primary">
-                <option value="" disabled selected>Especifique</option>
-                <option value="LOL">League of Legends</option>
-                <option value="Dota">Dota</option>
-                <option value="WOW">World of Warcraft</option>
-                <option value="CS">Counter Strike</option>
-                <option value="Outro">Outro</option>
+                <option disabled>Especifique</option>
+                {% for item in games %}
+                    {% if jogos == item %}
+                    {% set selected1 = 'selected' %}
+                    {% endif %}
+                <option {{selected1}}> {{ item }}</option>
+                {% endfor %}
             </select><br>
             <input type="checkbox" name="lf7" value="1" {{selected7}}> Ir a eventos relacionados a arte.
             <select name="eventos" class="btn-2 btn--primary">
-                <option value="" disabled selected>Especifique</option>
-                <option value="Shows">Shows musicais</option>
-                <option value="Teatro">Teatro</option>
-                <option value="Exposições de arte">Exposições de arte</option>
-                <option value="Shows de dança">Performances de dança</option>
-                <option value="Cinema">Cinema</option>
-                <option value="Outro">Outro</option>
+                <option disabled>Especifique</option>
+                {% for item in events %}
+                    {% if eventos == item %}
+                    {% set selected1 = 'selected' %}
+                    {% endif %}
+                <option {{selected1}}> {{ item }}</option>
+                {% endfor %}
             </select> <br>
             <input type="checkbox" name="lf8" value="1" {{selected8}}> Produzir arte comigo.
             <select name="arte" class="btn-2 btn--primary">
-                <option value="" disabled selected>Especifique</option>
-                <option value="Música">Música</option>
-                <option value="Artes Visuais">Artes visuais</option>
-                <option value="Dança">Dança</option>
-                <option value="Fotografia">Fotografia</option>
-                <option value="Literatura">Literatura</option>
-                <option value="Teatro">Teatro</option>
+                <option disabled>Especifique</option>
+                {% for item in art %}
+                    {% if arte == item %}
+                    {% set selected1 = 'selected' %}
+                    {% endif %}
+                <option {{selected1}}> {{ item }}</option>
+                {% endfor %}
             </select> <br>
             <input type="checkbox" name="lf9" value="1" {{selected9}}> Conhecer lugares novos.<br>
             <input type="checkbox" name="lf10" value="1" {{selected10}}> Ir a festas.<br>
@@ -223,38 +220,46 @@
             <input type="checkbox" name="lf13" value="1" {{selected13}}> Passar tempo com animais.<br>
             <input type="checkbox" name="lf14" value="1" {{selected14}}> Ir a eventos religiosos (culto, missa, etc).
             <select name="religiao" class="btn-2 btn--primary">
-                <option value="" disabled selected>Especifique</option>
-                <option value="Missa católica">Missa católica</option>
-                <option value="Centro espírita">Centro espírita </option>
-                <option value="Outro">Outro</option>
+                <option disabled>Especifique</option>
+                {% for item in religion %}
+                    {% if religiao == item %}
+                    {% set selected1 = 'selected' %}
+                    {% endif %}
+                <option {{selected1}}> {{ item }}</option>
+                {% endfor %}
             </select> <br>
             <input type="checkbox" name="lf15" value="1" {{selected15}}> Me ensinarem novas habilidades.<br>
             <input type="checkbox" name="lf16" value="1" {{selected16}}> Quem eu possa ensinar novas habilidades.<br>
             <input type="checkbox" name="lf17" value="1" {{selected17}}> Conversar ou debater sobre tópicos específicos. <br>
             <input type="checkbox" name="lf18" value="1" {{selected18}}> Realizar atividades ao ar livre.
             <select name="ar_livre" class="btn-2 btn--primary">
-                <option value="" disabled selected>Especifique</option>
-                <option value="Trilhas">Trilhas</option>
-                <option value="Acampar">Acampar</option>
-                <option value="Meditar">Meditar</option>
-                <option value="Outro">Outro</option>
+                <option disabled>Especifique</option>
+                {% for item in air %}
+                    {% if ar_livre == item %}
+                    {% set selected1 = 'selected' %}
+                    {% endif %}
+                <option {{selected1}}> {{ item }}</option>
+                {% endfor %}
             </select> <br>
             <input type="checkbox" name="lf19" value="1" {{selected19}}> Fazer trabalhos manuais.
             <select name="manuais" class="btn-2 btn--primary">
-                <option value="" disabled selected>Especifique</option>
-                <option value="Jardinagem">Jardinagem</option>
-                <option value="Marcenaria">Marcenaria</option>
-                <option value="Outro">Outro</option>
+                <option disabled>Especifique</option>
+                {% for item in manuals %}
+                    {% if manuais == item %}
+                    {% set selected1 = 'selected' %}
+                    {% endif %}
+                <option {{selected1}}> {{ item }}</option>
+                {% endfor %}
             </select> <br>
             <input type="checkbox" name="lf20" value="1" {{selected20}}> Criar grupos de conversa ou de estudos.
             <select name="estudos" class="btn-2 btn--primary">
-                <option value="" disabled selected> Especifique</option>
-                <option value="Estudos Sociais">Estudos em Ciências Sociais</option>
-                <option value="Estudos Exatas">Estudos em Ciências Exatas</option>
-                <option value="Estudos literatura">Estudos em Literatura</option>
-                <option value="Estudos arte">Estudos sobre arte</option>
-                <option value="Estudos línguas">Estudos em outras línguas</option>
-                <option value="Outro">Outro</option>
+                <option disabled>Especifique</option>
+                {% for item in studies %}
+                    {% if estudos == item %}
+                    {% set selected1 = 'selected' %}
+                    {% endif %}
+                <option {{selected1}}> {{ item }}</option>
+                {% endfor %}
             </select> <br>
             <input type="checkbox" name="lf21" value="1" {{selected21}}> Cozinhar ou produzir alimentos/bebidas.<br>
             <input type="checkbox" name="lf22" value="1" {{selected22}}> Realizar trabalhos voluntários ou sociais.<br>
