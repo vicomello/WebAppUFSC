@@ -22,6 +22,27 @@ traits_db_fields = ['lf1', 'lf2', 'lf3', 'lf4', 'lf5', 'lf6', 'lf7', 'lf8', 'lf9
                             'lf24', 'esportes', 'jogos', 'eventos', 'arte', 'religiao', 'ar_livre', 'manuais',
                             'estudos']
 
+#item_description_dict = {
+#    "Praticar esportes.": esportes,
+#    "Jogar jogos eletrônicos.": jogos,
+#    "Ir a eventos relacionados a arte.": eventos,
+#    "Produzir arte comigo.": arte,
+#    "Ir a eventos religiosos (culto, missa, etc).": religiao,
+#    "Realizar atividades ao ar livre.": ar_livre,
+#    "Fazer trabalhos manuais.": manuais,
+#    "Criar grupos de conversa ou de estudos.": estudos
+#}
+
+#item_lf_dict = {
+#    "lf5": esportes,
+#    "lf6": jogos,
+#    "lf7": eventos,
+#    "lf8": arte,
+#    "lf14": religiao,
+#    "lf18": ar_livre,
+#    "lf19": manuais,
+#    "lf20": estudos
+#}
 
 # Configure application - Copied from Problem set 8
 app = Flask(__name__)
@@ -202,7 +223,14 @@ def index():
 @login_required
 def lifestyle():
     if request.method == "GET":
-        return render_template("lifestyle.html")
+        query = Traits.query.filter_by(user_id=session['user_id']).first()
+
+        questions = dict()
+
+        for item in traits_db_fields:
+            questions[item] = getattr(query, item)
+
+        return render_template("lifestyle.html", **questions)
 
     elif request.method == "POST":
         """traits_db_fields = ['lf1', 'lf2', 'lf3', 'lf4', 'lf5', 'lf6', 'lf7', 'lf8', 'lf9', 'lf10', 'lf11', 'lf12',
@@ -249,33 +277,71 @@ def lifestyle():
 def profile():
 
     if request.method == "GET":
-        users_new_fields = ['name', 'age', 'sex', 'curso', 'top_1', 'top_2', 'top_3', 'ice_breaker', 'sexes']
 
+        # fields that the user will have to fill
+        users_new_fields = ['name', 'age', 'sex', 'curso', 'top_1', 'top_2', 'top_3', 'ice_breaker', 'sexes',
+                            'facebook']
 
-        # auxilary dictionary
         users_dict = dict()
 
         query = User.query.filter_by(user_id=session['user_id']).first()
+        query_traits = Traits.query.filter_by(user_id=session['user_id']).first()
+
         for field in users_new_fields:
             users_dict[field] = getattr(query, field)
 
-
-        query_traits = Traits.query.filter_by(user_id=session['user_id']).first()
         query_itens = Itens.query.first()
         questions = dict()
 
+        # List to store the 3 qualitative values collected via dropdown list from top 3 activities
+
+
+        item_description_dict = {
+                "Praticar esportes": 'esportes',
+                "Jogar jogos eletrônicos": 'jogos',
+                "Ir a eventos relacionados a arte": 'eventos',
+                "Produzir arte comigo": 'arte',
+                "Ir a eventos religiosos (culto, missa, etc)": 'religiao',
+                "Realizar atividades ao ar livre": 'ar_livre',
+                "Fazer trabalhos manuais": 'manuais',
+                "Criar grupos de conversa ou de estudos": 'estudos'
+             }
+
+        # Dictionaire to store the values from the users interests description (e.x.: tênis)
+        qualitative_descriptions = dict()
+
+        # creating list to iterate through
+        qualitative_list = ["trash", "top_1_item", "top_2_item", "top_3_item"]
+
+        for i in range(1, 4):
+            qualitative_descriptions[qualitative_list[i]] = getattr(query, 'top_{}'.format(i))
+
+        values_quali_list = list(qualitative_descriptions.values())
+
+        dict_of_quali = dict()
+
+        for j in range(0, 3):
+            if values_quali_list[j] in item_description_dict.keys():
+                preferencia = item_description_dict[values_quali_list[j]]
+                dict_of_quali['top_{}_item'.format(j+1)] = getattr(query_traits, preferencia)
+
+        print(dict_of_quali)
+
+        # This is getting the items the user checked and turning it into the sentences to display
         for element in traits_db_fields:
             if getattr(query_traits, element) is True:
-                    questions[element] = getattr(query_itens, element)
+                questions[element] = getattr(query_itens, element)
 
         marked = questions.values()
 
-        return render_template("profile.html", **users_dict, marked=marked)
+        return render_template("profile.html", **users_dict, marked=marked, **dict_of_quali)
 
     elif request.method == "POST":
 
         # list of reference for fields used
-        users_new_fields = ['name', 'age', 'sex', 'curso', 'top_1', 'top_2', 'top_3', 'ice_breaker', 'sexes']
+        users_new_fields = ['name', 'age', 'sex', 'curso', 'top_1', 'top_2', 'top_3', 'ice_breaker', 'sexes','facebook']
+
+        #'top_1_item', 'top_2_item', 'top_3_item'
 
         # auxilary dictionary
         users_dict = dict()
@@ -284,6 +350,11 @@ def profile():
             response = request.form.get(field)
             users_dict[field] = response
 
+        print("users_dict:")
+        print(users_dict)
+
+        details_dict = dict()
+        query_itens = Itens.query.first()
 
         users_dict['user_id'] = session['user_id']
         user = User.query.filter_by(user_id=session['user_id']).first()
@@ -398,6 +469,8 @@ def match():
         # Calculating which user appears the most number of times using the mode in that list
         partner = max(set(nova), key=nova.count)
 
+        print(partner)
+
         # Get the user's info based on their user_id
 
 
@@ -408,12 +481,10 @@ def match():
         query = User.query.filter_by(user_id=partner).first()
 
         # can we make this a global variable somehow?
-        users_new_fields = ['username', 'email','name', 'age', 'sex', 'curso', 'top_1', 'top_2', 'top_3', 'ice_breaker', 'sexes']
+        users_new_fields = ['email', 'name', 'age', 'sex', 'curso', 'top_1', 'top_2', 'top_3', 'ice_breaker', 'sexes', 'facebook']
 
         for field in users_new_fields:
             questions[field] = getattr(query, field)
-
-        print(questions)
 
         # Render the results of who is the highest matching person
         return render_template("to-match.html", **questions)

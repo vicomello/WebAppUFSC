@@ -59,7 +59,8 @@
                         <p>Nome:</p><textarea name="name" class="full-width">{{name}}</textarea>
                         <p> Idade:</p><textarea name="age" class="full-width">{{age}}</textarea>
                         <p> Curso:</p><textarea name="curso" class="full-width">{{curso}}</textarea>
-                        <p> Selecione as três atividades para as quais você mais </p>
+                        <p> Link do perfil no facebook:</p><textarea name="facebook" class="full-width">{{facebook}}</textarea>
+                        <p> Selecione as três atividades para as quais você mais (até 3)</p>
 
                     <select name="top_1" class="full-width" value={{top_1}}>
                         {% for item in marked %}
@@ -69,6 +70,10 @@
                         <option {{selected1}}> {{ item }}</option>
                         {% endfor %}
                     </select>
+                    <select name="top_1_item" class="" value="{{top_1_item}}">
+                        <option>{{top_1_item}}</option>
+                    </select>
+
                     <select name="top_2" class="full-width">
                         {% for item in marked %}
                             {% if top_2 == item %}

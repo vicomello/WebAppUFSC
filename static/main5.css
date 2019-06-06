@@ -1060,6 +1060,13 @@ input::-moz-focus-inner {
   margin: 0;
 }
 
+.row:after {
+    content: " ";
+    display: block;
+    border-bottom: 2px solid #000000;
+  }
+
+
 .lining dt + dt:before,
 .lining dd + dt:before {
   content: "\A";
