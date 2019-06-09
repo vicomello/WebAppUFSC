@@ -175,7 +175,7 @@
             <input type="checkbox" name="lf4" value="1" {{selected4}}> Compartilhar interesses sobre livros e literatura.<br>
             <input type="checkbox" name="lf5" value="1" {{selected5}}> Praticar esportes.
             <select name="esportes" class="btn-2 btn--primary">
-                <option disabled>Especifique</option>
+                <option selected disabled value="">Especifique</option>
                 {% for item in sports %}
                     {% if esportes == item %}
                     {% set selected1 = 'selected' %}
@@ -185,7 +185,7 @@
             </select><br>
             <input type="checkbox" name="lf6" value="1" {{selected6}}> Jogar jogos eletrônicos.
             <select name="jogos" class="btn-2 btn--primary">
-                <option disabled>Especifique</option>
+                <option selected disabled value="">Especifique</option>
                 {% for item in games %}
                     {% if jogos == item %}
                     {% set selected1 = 'selected' %}
@@ -195,7 +195,7 @@
             </select><br>
             <input type="checkbox" name="lf7" value="1" {{selected7}}> Ir a eventos relacionados a arte.
             <select name="eventos" class="btn-2 btn--primary">
-                <option disabled>Especifique</option>
+                <option selected disabled value="">Especifique</option>
                 {% for item in events %}
                     {% if eventos == item %}
                     {% set selected1 = 'selected' %}
@@ -205,7 +205,7 @@
             </select> <br>
             <input type="checkbox" name="lf8" value="1" {{selected8}}> Produzir arte comigo.
             <select name="arte" class="btn-2 btn--primary">
-                <option disabled>Especifique</option>
+                <option selected disabled value="">Especifique</option>
                 {% for item in art %}
                     {% if arte == item %}
                     {% set selected1 = 'selected' %}
@@ -220,7 +220,7 @@
             <input type="checkbox" name="lf13" value="1" {{selected13}}> Passar tempo com animais.<br>
             <input type="checkbox" name="lf14" value="1" {{selected14}}> Ir a eventos religiosos (culto, missa, etc).
             <select name="religiao" class="btn-2 btn--primary">
-                <option disabled>Especifique</option>
+                <option selected disabled value="">Especifique</option>
                 {% for item in religion %}
                     {% if religiao == item %}
                     {% set selected1 = 'selected' %}
@@ -233,7 +233,7 @@
             <input type="checkbox" name="lf17" value="1" {{selected17}}> Conversar ou debater sobre tópicos específicos. <br>
             <input type="checkbox" name="lf18" value="1" {{selected18}}> Realizar atividades ao ar livre.
             <select name="ar_livre" class="btn-2 btn--primary">
-                <option disabled>Especifique</option>
+                <option selected disabled value="">Especifique</option>
                 {% for item in air %}
                     {% if ar_livre == item %}
                     {% set selected1 = 'selected' %}
@@ -243,7 +243,7 @@
             </select> <br>
             <input type="checkbox" name="lf19" value="1" {{selected19}}> Fazer trabalhos manuais.
             <select name="manuais" class="btn-2 btn--primary">
-                <option disabled>Especifique</option>
+                <option selected disabled value="">Especifique</option>
                 {% for item in manuals %}
                     {% if manuais == item %}
                     {% set selected1 = 'selected' %}
@@ -253,7 +253,7 @@
             </select> <br>
             <input type="checkbox" name="lf20" value="1" {{selected20}}> Criar grupos de conversa ou de estudos.
             <select name="estudos" class="btn-2 btn--primary">
-                <option disabled>Especifique</option>
+                <option selected disabled value="">Especifique</option>
                 {% for item in studies %}
                     {% if estudos == item %}
                     {% set selected1 = 'selected' %}

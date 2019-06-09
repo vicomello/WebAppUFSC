@@ -17,10 +17,20 @@ import smtplib
 from helpers import login_required, apology
 
 lista = list()
-traits_db_fields = ['lf1', 'lf2', 'lf3', 'lf4', 'lf5', 'lf6', 'lf7', 'lf8', 'lf9', 'lf10', 'lf11', 'lf12',
-                            'lf13', 'lf14', 'lf15', 'lf16', 'lf17', 'lf18', 'lf19', 'lf20', 'lf21', 'lf22', 'lf23',
-                            'lf24', 'esportes', 'jogos', 'eventos', 'arte', 'religiao', 'ar_livre', 'manuais',
-                            'estudos']
+traits_db_fields = ['lf1', 'lf2', 'lf3', 'lf4', 'lf5','esportes', 'lf6', 'jogos', 'lf7', 'eventos', 'lf8', 'arte',
+                    'lf9', 'lf10', 'lf11', 'lf12', 'lf13', 'lf14', 'religiao', 'lf15', 'lf16', 'lf17', 'lf18',
+                    'ar_livre', 'lf19', 'manuais', 'lf20', 'estudos', 'lf21', 'lf22', 'lf23', 'lf24']
+
+#item_lf_dict = {
+#    "lf5": esportes,
+#    "lf6": jogos
+#    "lf7": eventos,
+#    "lf8": arte,
+#    "lf14": religiao,
+#    "lf18": ar_livre,
+#    "lf19": manuais,
+#    "lf20": estudos
+#}
 
 #item_description_dict = {
 #    "Praticar esportes.": esportes,
@@ -33,16 +43,6 @@ traits_db_fields = ['lf1', 'lf2', 'lf3', 'lf4', 'lf5', 'lf6', 'lf7', 'lf8', 'lf9
 #    "Criar grupos de conversa ou de estudos.": estudos
 #}
 
-#item_lf_dict = {
-#    "lf5": esportes,
-#    "lf6": jogos,
-#    "lf7": eventos,
-#    "lf8": arte,
-#    "lf14": religiao,
-#    "lf18": ar_livre,
-#    "lf19": manuais,
-#    "lf20": estudos
-#}
 
 # Configure application - Copied from Problem set 8
 app = Flask(__name__)
@@ -251,26 +251,33 @@ def lifestyle():
 
     elif request.method == "POST":
 
+        # ==================== PART 1: GET GENERAL INFO FROM FIELDS IN PROFILE AND POST IT IN DB ====================
+
+        quali_dict = dict()
         traits_dict = dict()
-        for field in traits_db_fields:
-            response = request.form.get(field)
+
+        # For loop inserting info into dicts
+        for field in range(len(traits_db_fields)):
+            response = request.form.get('{}'.format(traits_db_fields[field]))
             # checks if response exists (not filled in the form)
             if response:
                 # if response is not "1" , its database value will be response itself
                 if len(response) > 1:
-                    traits_dict[field] = response
+                    traits_dict[traits_db_fields[field]] = response
+                    quali_dict[traits_db_fields[field-1]] = response
                 # on the other hand, it will be True(Boolean)
                 else:
-                    traits_dict[field] = 1
+                    traits_dict[traits_db_fields[field]] = 1
             # if response doesn't exists, database value will be 0
             else:
-                traits_dict[field] = 0
+                traits_dict[traits_db_fields[field]] = 0
 
         traits_dict['user_id'] = session['user_id']
 
-        # Checking if user is already in "traits" table or if he is inputing his interests for the first time
-
+        print(quali_dict)
         user = Traits.query.filter_by(user_id=session['user_id']).first()
+
+        # Checking if user is already in "traits" table or if he is inputing his interests for the first time
         if not user:
 
             traits_entry = Traits(**traits_dict)
@@ -291,33 +298,36 @@ def profile():
 
     if request.method == "GET":
 
-        # fields that the user will have to fill in profile page
+        # ==================== PART 1 - DISPLAY INFO FROM PROFILE PAGE GIVEN BY USER ====================
+
+        # Fields in profile page
         users_new_fields = ['name', 'age', 'sex', 'curso', 'top_1', 'top_2', 'top_3', 'ice_breaker', 'sexes',
-                            'facebook']
+                            'facebook', 'top_1_text', 'top_2_text', 'top_3_text']
 
-        # dict to store the values that come from db and to render in profile
-        users_dict = dict()
-
-        # Querying from 3 different tables
+        # Querying from 3 different tables needed
         query = User.query.filter_by(user_id=session['user_id']).first()
         query_traits = Traits.query.filter_by(user_id=session['user_id']).first()
         query_itens = Itens.query.first()
 
-        # Storing data from table users into dict to display at profile
+        # Empty dict to store values from db
+        users_dict = dict()
+        # Storing data from table "Users" into dict
         for field in users_new_fields:
             users_dict[field] = getattr(query, field)
 
-        # This dict stores the questions related to each item. E.g.: lf1 = "Praticar esportes".
+        # This dict will store the questions descriptions (e.g.: lf5: praticar esportes)
         questions = dict()
-
-        # This is getting the items the user checked and turning it into the sentences to display
+        # Turning items into questions descriptions
         for element in traits_db_fields:
             if getattr(query_traits, element) is True:
                 questions[element] = getattr(query_itens, element)
 
+        # List to be passed to display at profile page
         marked = questions.values()
 
-        # This dict serves as db to check either an item has description or not
+        # ==================== PART 2: DISPLAYING ADDITIONAL INFO RELATED TO EACH ITEM ====================
+
+        # Dict of item additional descriptions
         item_description_dict = {
                 "Praticar esportes": 'esportes',
                 "Jogar jogos eletrônicos": 'jogos',
@@ -331,62 +341,69 @@ def profile():
 
         # Dictionaire to store the values from the users interests description (e.x.: tênis)
         qualitative_descriptions = dict()
-
-        # creating list to iterate through (number 0 won't go)
+        # Creating list of items to iterate through (number 0 won't go)
         qualitative_list = ["trash", "top_1_item", "top_2_item", "top_3_item"]
-
-        # Iterating through dict to store the values the user has selected as top 3 activities
+        # Saving user additional info into dict
         for i in range(1, 4):
-            qualitative_descriptions[qualitative_list[i]] = getattr(query, 'top_{}'.format(i))
+            qualitative_descriptions[qualitative_list[i]] = getattr(query, 'top_{}_item'.format(i))
 
         # Creating list for values in the dict
-        values_quali_list = list(qualitative_descriptions.values())
+        #values_quali_list = list(qualitative_descriptions.values())
 
         # Dict to store the final descriptive interests (top_1_item, etc)
-        dict_of_quali = dict()
+        #dict_of_quali = dict()
 
         # Iterating through list of user top 3 preferences to get final top_1_item and store in a dict (e.x.: tênis)
-        for j in range(0, 3):
-            if values_quali_list[j] in item_description_dict.keys():
-                preferencia = item_description_dict[values_quali_list[j]]
-                dict_of_quali['top_{}_item'.format(j+1)] = getattr(query_traits, preferencia)
+        #for j in range(0, 3):
+        #    if values_quali_list[j] in item_description_dict.keys():
+        #        preferencia = item_description_dict[values_quali_list[j]]
+        #        dict_of_quali['top_{}_item'.format(j+1)] = getattr(query_traits, preferencia)
 
-        return render_template("profile.html", **users_dict, marked=marked, **dict_of_quali)
+        #for key, value in qualitative_descriptions.items():
+            # setattr(object (observation), attribute, value)
+        #    setattr(query, key, value)
+        #db.session.commit()
+
+        return render_template("profile.html", **users_dict, marked=marked, **qualitative_descriptions)
 
     elif request.method == "POST":
 
-        # list of reference for fields used
+        # ======================== PART 1: POSTING USER'S BASIC INFO FROM PROFILE INTO DB ========================
+
+        # Fields to be posted into db
         users_new_fields = ['name', 'age', 'sex', 'curso', 'top_1', 'top_2', 'top_3', 'ice_breaker', 'sexes','facebook']
-
-        # auxilary dictionary
+        # Auxilary dictionary to store info from those fields
         users_dict = dict()
-
+        users_dict['user_id'] = session['user_id']
         for field in users_new_fields:
             response = request.form.get(field)
             users_dict[field] = response
 
-        users_dict['user_id'] = session['user_id']
+        # Query from User table
         user = User.query.filter_by(user_id=session['user_id']).first()
-
+        # Posting basic info into table Users
         for key, value in users_dict.items():
             setattr(user, key, value)
         db.session.commit()
 
-        query = User.query.filter_by(user_id=session['user_id']).first()
-        for field in users_new_fields:
-            users_dict[field] = getattr(query, field)
+        #query = User.query.filter_by(user_id=session['user_id']).first()
+        #for field in users_new_fields:
+        #    users_dict[field] = getattr(query, field)
 
-        questions = dict()
-        query_traits = Traits.query.filter_by(user_id=session['user_id']).first()
-        query_itens = Itens.query.first()
+        #questions = dict()
+        #query_traits = Traits.query.filter_by(user_id=session['user_id']).first()
+        #query_itens = Itens.query.first()
 
-        for element in traits_db_fields:
-            if getattr(query_traits, element) is True:
-                questions[element] = getattr(query_itens, element)
+        #for element in traits_db_fields:
+        #    if getattr(query_traits, element) is True:
+        #        questions[element] = getattr(query_itens, element)
 
-        marked = questions.values()
+        #marked = questions.values()
 
-        # This dict serves as db to check either an item has description or not
+        # ==================== PART 2: POSTING ADDITIONAL INFO INTO USERS TABLE ====================
+        ### isnt this only get???
+
+        # This dict serves as reference to check either an item has description or not
         item_description_dict = {
             "Praticar esportes": 'esportes',
             "Jogar jogos eletrônicos": 'jogos',
@@ -400,13 +417,17 @@ def profile():
 
         # Dictionaire to store the values from the users interests description (e.x.: tênis)
         qualitative_descriptions = dict()
-
-        # creating list to iterate through (number 0 won't go)
+        # List to iterate through (number 0 won't go)
         qualitative_list = ["trash", "top_1_item", "top_2_item", "top_3_item"]
-
         # Iterating through dict to store the values the user has selected as top 3 activities
         for i in range(1, 4):
             qualitative_descriptions[qualitative_list[i]] = getattr(query, 'top_{}'.format(i))
+
+        for key, value in qualitative_descriptions.items():
+            # setattr(object (observation), attribute, value)
+            setattr(user, key, value)
+        db.session.commit()
+
 
         # Creating list for values in the dict
         values_quali_list = list(qualitative_descriptions.values())
@@ -474,6 +495,7 @@ def login():
 # This is the algorithm that matches the user with someone else highly compatible
 
 
+
 @app.route("/match", methods=["GET", "POST"])
 @login_required
 def match():
@@ -481,7 +503,7 @@ def match():
     # Get the personality data from the user
     if request.method == "GET":
 
-        # Gets the user's data about his interests/lifestyle
+        """# Gets the user's data about his interests/lifestyle
         lf_dict = dict()
         lifestyle_dict = dict()
         for i in range(1, 25):
@@ -500,8 +522,6 @@ def match():
 
             lifestyle_dict[lf_key] = lfkey_user_id
 
-            #db.execute("SELECT user_id FROM traits WHERE {}=:parameter".format(lf_key), parameter=lf_dict[lf_key])
-
             # Appends all those users that had things in common to one list
             for item in lifestyle_dict[lf_key]:
                 lista.append(item)
@@ -509,9 +529,20 @@ def match():
         # Removes the own user (logged in) from the list
         nova = [x for x in lista if x != session["user_id"]]
 
+
+        #print("\n\n\n lifestyle_dict is:")
+        #print(lifestyle_dict)
+
+        #print("\n\n\n lista is:")
+        #print(lista)
+
+        #print("\n\n\n nova is:")
+        #print(nova)
+
         # Calculating which user appears the most number of times using the mode in that list
         partner = max(set(nova), key=nova.count)
 
+        print("\n\n\n partner is:")
         print(partner)
 
         # Get the user's info based on their user_id
@@ -527,11 +558,74 @@ def match():
         users_new_fields = ['email', 'name', 'age', 'sex', 'curso', 'top_1', 'top_2', 'top_3', 'ice_breaker', 'sexes', 'facebook']
 
         for field in users_new_fields:
-            questions[field] = getattr(query, field)
+            questions[field] = getattr(query, field"""
+        #================================== mudando algoritmo ==============================================
+
+        profile_items = ['top_1', 'top_2', 'top_3', 'top_1_item', 'top_2_item', 'top_3_item']
+        user_id = session['user_id']
+        user = User.query.filter_by(user_id=user_id).first()
+        top_info_user = {x: getattr(user, x) for x in profile_items}
+        preference = getattr(user, 'sexes')
+        if preference == 0:
+            sexo = getattr(user, 'sex')
+            query = User.query.filter_by(sex=sexo).all()
+        else:
+            query = User.query.all()
+
+        compatibility_of_users = dict()
+        people_in_order = list()
+        for row in query:
+            row_id = getattr(row, 'user_id')
+            if user_id != row_id:
+                compatibilidade = 0
+                query_pessoa = User.query.filter_by(user_id=row_id).first()
+                top_info_pessoa = {x: getattr(query_pessoa, x) for x in profile_items}
+
+                if top_info_user['top_1'] == top_info_pessoa['top_1']:
+                    compatibilidade = compatibilidade + 40
+                    if top_info_user['top_1_item'] == top_info_pessoa['top_1_item']:
+                        compatibilidade = compatibilidade + 20
+
+                if top_info_user['top_2'] == top_info_pessoa['top_2']:
+                    compatibilidade = compatibilidade + 30
+                    if top_info_user['top_2_item'] == top_info_pessoa['top_2_item']:
+                        compatibilidade = compatibilidade + 20
+
+                if top_info_user['top_3'] == top_info_pessoa['top_3']:
+                    compatibilidade = compatibilidade + 20
+                    if top_info_user['top_3_item'] == top_info_pessoa['top_3_item']:
+                        compatibilidade = compatibilidade + 20
+
+                compatibility_of_users['{}'.format(row_id)] = compatibilidade
+                #segundo_maior = sorted(compatibility_of_users.values(), reverse=True)
+                x = ((v, k) for k, v in compatibility_of_users.items())
+                x = sorted(x, reverse=True)
+
+        for i in range(0, 10):
+            people_in_order.append(x[i][1])
+        print(people_in_order)
+
+
+
+
+        #lf_dict = dict()
+        #for i in range(1, 25):
+            #lf_key = 'lf{}'.format(i)
+            #lf_dict[lf_key] = getattr(user, lf_key)
+
+
+
+
 
         # Render the results of who is the highest matching person
-        return render_template("to-match.html", **questions)
+        # pass **questions
+        return render_template("to-match.html")
 
+
+@app.route("/matched", methods=["GET", "POST"])
+@login_required
+def matched():
+    return render_template("matched.html")
 
 # Log out function - copied from Problem Set 8
 @app.route("/logout")
