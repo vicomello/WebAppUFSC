@@ -274,7 +274,6 @@ def lifestyle():
 
         traits_dict['user_id'] = session['user_id']
 
-        print(quali_dict)
         user = Traits.query.filter_by(user_id=session['user_id']).first()
 
         # Checking if user is already in "traits" table or if he is inputing his interests for the first time
@@ -345,7 +344,12 @@ def profile():
         qualitative_list = ["trash", "top_1_item", "top_2_item", "top_3_item"]
         # Saving user additional info into dict
         for i in range(1, 4):
-            qualitative_descriptions[qualitative_list[i]] = getattr(query, 'top_{}_item'.format(i))
+            itens_preenchidos = getattr(query, 'top_{}_item'.format(i))
+            if itens_preenchidos:
+                qualitative_descriptions[qualitative_list[i]] = itens_preenchidos
+
+        lista_itens_preenchidos = list(qualitative_descriptions.values())
+
 
         # Creating list for values in the dict
         #values_quali_list = list(qualitative_descriptions.values())
@@ -364,7 +368,7 @@ def profile():
         #    setattr(query, key, value)
         #db.session.commit()
 
-        return render_template("profile.html", **users_dict, marked=marked, **qualitative_descriptions)
+        return render_template("profile.html", **users_dict, marked=marked, **qualitative_descriptions, lista_itens_preenchidos=lista_itens_preenchidos)
 
     elif request.method == "POST":
 
@@ -386,22 +390,25 @@ def profile():
             setattr(user, key, value)
         db.session.commit()
 
-        #query = User.query.filter_by(user_id=session['user_id']).first()
+
         #for field in users_new_fields:
         #    users_dict[field] = getattr(query, field)
 
-        #questions = dict()
-        #query_traits = Traits.query.filter_by(user_id=session['user_id']).first()
-        #query_itens = Itens.query.first()
 
-        #for element in traits_db_fields:
-        #    if getattr(query_traits, element) is True:
-        #        questions[element] = getattr(query_itens, element)
+        # Auxiliary empty dict
+        questions = dict()
 
-        #marked = questions.values()
+        # Getting query
+        query_traits = Traits.query.filter_by(user_id=session['user_id']).first()
+        query_itens = Itens.query.first()
+
+        for element in traits_db_fields:
+            if getattr(query_traits, element) is True:
+                questions[element] = getattr(query_itens, element)
+
+        marked = questions.values()
 
         # ==================== PART 2: POSTING ADDITIONAL INFO INTO USERS TABLE ====================
-        ### isnt this only get???
 
         # This dict serves as reference to check either an item has description or not
         item_description_dict = {
@@ -419,10 +426,16 @@ def profile():
         qualitative_descriptions = dict()
         # List to iterate through (number 0 won't go)
         qualitative_list = ["trash", "top_1_item", "top_2_item", "top_3_item"]
+        # Querying from Users table
+        query = User.query.filter_by(user_id=session['user_id']).first()
         # Iterating through dict to store the values the user has selected as top 3 activities
         for i in range(1, 4):
-            qualitative_descriptions[qualitative_list[i]] = getattr(query, 'top_{}'.format(i))
+            top = getattr(query, 'top_{}'.format(i))
+            if top in list(item_description_dict.keys()):
+                hobby = item_description_dict['{}'.format(top)]
+                qualitative_descriptions[qualitative_list[i]] = getattr(query_traits, hobby)
 
+        # Commiting info into users table
         for key, value in qualitative_descriptions.items():
             # setattr(object (observation), attribute, value)
             setattr(user, key, value)
@@ -430,18 +443,22 @@ def profile():
 
 
         # Creating list for values in the dict
-        values_quali_list = list(qualitative_descriptions.values())
+        #values_quali_list = list(qualitative_descriptions.values())
 
         # Dict to store the final descriptive interests (top_1_item, etc)
-        dict_of_quali = dict()
+        #dict_of_quali = dict()
 
         # Iterating through list of user top 3 preferences to get final top_1_item and store in a dict (e.x.: tênis)
-        for j in range(0, 3):
-            if values_quali_list[j] in item_description_dict.keys():
-                preferencia = item_description_dict[values_quali_list[j]]
-                dict_of_quali['top_{}_item'.format(j + 1)] = getattr(query_traits, preferencia)
+        #for j in range(0, 3):
+        #    if values_quali_list[j] in item_description_dict.keys():
+        #        preferencia = item_description_dict[values_quali_list[j]]
+        #        dict_of_quali['top_{}_item'.format(j + 1)] = getattr(query_traits, preferencia)
 
-        return render_template("profile.html", **users_dict, marked=marked, **dict_of_quali)
+        #list_of_quali = list(dict_of_quali.values())
+
+        return render_template("profile.html", **users_dict, marked=marked, **qualitative_descriptions)
+                               #list_of_quali=list_of_quali)   **dict_of_quali,
+
 
 
 @app.route("/check", methods=["GET"])
@@ -559,28 +576,46 @@ def match():
 
         for field in users_new_fields:
             questions[field] = getattr(query, field"""
-        #================================== mudando algoritmo ==============================================
 
+        #======================== PART 1: Fazer match com as principais caractetisticas (table users) ===========================
+
+        # Variáveis que vão ser usadas na primeira parte do match
         profile_items = ['top_1', 'top_2', 'top_3', 'top_1_item', 'top_2_item', 'top_3_item']
+        # Querying
         user_id = session['user_id']
         user = User.query.filter_by(user_id=user_id).first()
+        # Dict com as infos do user
         top_info_user = {x: getattr(user, x) for x in profile_items}
+        # Preferência de sexos (pegar base toda ou apenas aqueles com mesmo sexo)
         preference = getattr(user, 'sexes')
+        # Querying com base na preferência
         if preference == 0:
             sexo = getattr(user, 'sex')
             query = User.query.filter_by(sex=sexo).all()
         else:
             query = User.query.all()
 
+        # Auxiliary dict
         compatibility_of_users = dict()
+        # Auxiliary list
         people_in_order = list()
+
+        # Get traits info from user
+        lf_dict = dict()
+        lifestyle_dict = dict()
+        query_traits = Traits.query.filter_by(user_id=user_id).first()
+        for i in range(1, 25):
+            lf_key = 'lf{}'.format(i)
+            lf_dict[lf_key] = getattr(query_traits, lf_key)
+
+        query_traits_people = Traits.query.all()
+
+        # Loop compara cada pessoa na base com o user e retorna um grau de compatibilidade
         for row in query:
             row_id = getattr(row, 'user_id')
             if user_id != row_id:
                 compatibilidade = 0
-                query_pessoa = User.query.filter_by(user_id=row_id).first()
-                top_info_pessoa = {x: getattr(query_pessoa, x) for x in profile_items}
-
+                top_info_pessoa = {x: getattr(row, x) for x in profile_items}
                 if top_info_user['top_1'] == top_info_pessoa['top_1']:
                     compatibilidade = compatibilidade + 40
                     if top_info_user['top_1_item'] == top_info_pessoa['top_1_item']:
@@ -596,30 +631,42 @@ def match():
                     if top_info_user['top_3_item'] == top_info_pessoa['top_3_item']:
                         compatibilidade = compatibilidade + 20
 
+                # ============================== PARTE 2: Outras variáveis de interesses ==============================
+
+                query_traits_row = Traits.query.filter_by(user_id=row_id).first()
+                if query_traits_row:
+                    row_dict = dict()
+                    for i in range(1, 25):
+                        lf_key = 'lf{}'.format(i)
+                        row_dict[lf_key] = getattr(query_traits_row, lf_key)
+
+                    for i in range(1, 25):
+                        if lf_dict['lf{}'.format(i)] == 1 and lf_dict['lf{}'.format(i)] == row_dict['lf{}'.format(i)]:
+                            compatibilidade = compatibilidade + 2
+
                 compatibility_of_users['{}'.format(row_id)] = compatibilidade
-                #segundo_maior = sorted(compatibility_of_users.values(), reverse=True)
                 x = ((v, k) for k, v in compatibility_of_users.items())
                 x = sorted(x, reverse=True)
 
+        info_list = ['name', 'age', 'curso', 'top_1', 'top_2', 'top_3', 'top_1_item', 'top_2_item', 'top_3_item',
+                     'top_1_text', 'top_2_text', 'top_3_text']
+
+
+        #list_of_lists = list()
+        #for i in range (0, 10):
+        #    list_key = list(list_'{}'.format(i))
+        #    list_of_lists.append(list_key)
+
+        top_10 = list()
         for i in range(0, 10):
             people_in_order.append(x[i][1])
-        print(people_in_order)
+            query_top_10 = User.query.filter_by(user_id=people_in_order[i]).first()
+            person = dict()
+            for item in info_list:
+                person[item] = getattr(query_top_10, item)
+            top_10.append(person)
 
-
-
-
-        #lf_dict = dict()
-        #for i in range(1, 25):
-            #lf_key = 'lf{}'.format(i)
-            #lf_dict[lf_key] = getattr(user, lf_key)
-
-
-
-
-
-        # Render the results of who is the highest matching person
-        # pass **questions
-        return render_template("to-match.html")
+        return render_template("to-match.html", top_10=top_10)
 
 
 @app.route("/matched", methods=["GET", "POST"])
