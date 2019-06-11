@@ -3,6 +3,7 @@ import os
 from cs50 import SQL
 from flask import Flask, jsonify, redirect, render_template, request, session
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import or_
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions
@@ -520,63 +521,6 @@ def match():
     # Get the personality data from the user
     if request.method == "GET":
 
-        """# Gets the user's data about his interests/lifestyle
-        lf_dict = dict()
-        lifestyle_dict = dict()
-        for i in range(1, 25):
-            lf_key = 'lf{}'.format(i)
-            lf_dict[lf_key] = getattr(Traits.query.filter_by(user_id=session['user_id']).all()[0], lf_key)
-
-            # Creates a list of dicts for every lifestyle item consisting in all the users that have marked the same response
-            dicionario={}
-            dicionario[lf_key] = lf_dict[lf_key]
-
-            keys_in_traits = Traits.query.filter_by(**dicionario).all()
-
-            lfkey_user_id = []
-            for key in keys_in_traits:
-                lfkey_user_id.append(key.user_id)
-
-            lifestyle_dict[lf_key] = lfkey_user_id
-
-            # Appends all those users that had things in common to one list
-            for item in lifestyle_dict[lf_key]:
-                lista.append(item)
-
-        # Removes the own user (logged in) from the list
-        nova = [x for x in lista if x != session["user_id"]]
-
-
-        #print("\n\n\n lifestyle_dict is:")
-        #print(lifestyle_dict)
-
-        #print("\n\n\n lista is:")
-        #print(lista)
-
-        #print("\n\n\n nova is:")
-        #print(nova)
-
-        # Calculating which user appears the most number of times using the mode in that list
-        partner = max(set(nova), key=nova.count)
-
-        print("\n\n\n partner is:")
-        print(partner)
-
-        # Get the user's info based on their user_id
-
-
-        # creating empty dict
-        questions = dict()
-
-        # getting info from partner
-        query = User.query.filter_by(user_id=partner).first()
-
-        # can we make this a global variable somehow?
-        users_new_fields = ['email', 'name', 'age', 'sex', 'curso', 'top_1', 'top_2', 'top_3', 'ice_breaker', 'sexes', 'facebook']
-
-        for field in users_new_fields:
-            questions[field] = getattr(query, field"""
-
         #======================== PART 1: Fazer match com as principais caractetisticas (table users) ===========================
 
         # Variáveis que vão ser usadas na primeira parte do match
@@ -589,11 +533,17 @@ def match():
         # Preferência de sexos (pegar base toda ou apenas aqueles com mesmo sexo)
         preference = getattr(user, 'sexes')
         # Querying com base na preferência
+        sexo = getattr(user, 'sex')
         if preference == 0:
-            sexo = getattr(user, 'sex')
             query = User.query.filter_by(sex=sexo).all()
-        else:
-            query = User.query.all()
+        elif preference == 1 and sexo == 1:
+            query = User.query.filter(or_(User.sexes == 1, User.sex == 1))
+        elif preference == 1 and sexo == 0:
+            query = User.query.filter(or_(User.sexes == 1, User.sex == 0))
+
+        number_of_rows = -1
+        for row in query:
+            number_of_rows = number_of_rows + 1
 
         # Auxiliary dict
         compatibility_of_users = dict()
@@ -651,22 +601,19 @@ def match():
         info_list = ['name', 'age', 'curso', 'top_1', 'top_2', 'top_3', 'top_1_item', 'top_2_item', 'top_3_item',
                      'top_1_text', 'top_2_text', 'top_3_text']
 
-
-        #list_of_lists = list()
-        #for i in range (0, 10):
-        #    list_key = list(list_'{}'.format(i))
-        #    list_of_lists.append(list_key)
-
-        top_10 = list()
-        for i in range(0, 10):
+        top_people = list()
+        for i in range(0, number_of_rows):
             people_in_order.append(x[i][1])
-            query_top_10 = User.query.filter_by(user_id=people_in_order[i]).first()
+            query_top_people = User.query.filter_by(user_id=people_in_order[i]).first()
             person = dict()
             for item in info_list:
-                person[item] = getattr(query_top_10, item)
-            top_10.append(person)
+                person[item] = getattr(query_top_people, item)
+            top_people.append(person)
 
-        return render_template("to-match.html", top_10=top_10)
+        print(people_in_order)
+        print(top_people)
+
+        return render_template("to-match.html", top_people=top_people)
 
 
 @app.route("/matched", methods=["GET", "POST"])

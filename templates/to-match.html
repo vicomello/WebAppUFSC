@@ -38,7 +38,7 @@
     </header>
 <div class="s-about-2">
 <section>
-    <h1> Match List</h1>
+    <h1> Lista de sugestões</h1>
 
     <form class="label" action="/to-match" method="POST">
         <!-- form to understand interests -->
@@ -50,7 +50,7 @@
 
             <div class="column">
                 <div class="item-plan__block">
-                  {% for item in top_10 %}
+                  {% for item in top_people %}
                     <div class="row">
                         <h3>{{ item["name"] }}</h3>
                         <p><tr>{{item["age"]}}, {{item["curso"]}}</tr></p>
