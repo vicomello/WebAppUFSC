@@ -351,24 +351,6 @@ def profile():
 
         lista_itens_preenchidos = list(qualitative_descriptions.values())
 
-
-        # Creating list for values in the dict
-        #values_quali_list = list(qualitative_descriptions.values())
-
-        # Dict to store the final descriptive interests (top_1_item, etc)
-        #dict_of_quali = dict()
-
-        # Iterating through list of user top 3 preferences to get final top_1_item and store in a dict (e.x.: tênis)
-        #for j in range(0, 3):
-        #    if values_quali_list[j] in item_description_dict.keys():
-        #        preferencia = item_description_dict[values_quali_list[j]]
-        #        dict_of_quali['top_{}_item'.format(j+1)] = getattr(query_traits, preferencia)
-
-        #for key, value in qualitative_descriptions.items():
-            # setattr(object (observation), attribute, value)
-        #    setattr(query, key, value)
-        #db.session.commit()
-
         return render_template("profile.html", **users_dict, marked=marked, **qualitative_descriptions, lista_itens_preenchidos=lista_itens_preenchidos)
 
     elif request.method == "POST":
@@ -441,21 +423,6 @@ def profile():
             # setattr(object (observation), attribute, value)
             setattr(user, key, value)
         db.session.commit()
-
-
-        # Creating list for values in the dict
-        #values_quali_list = list(qualitative_descriptions.values())
-
-        # Dict to store the final descriptive interests (top_1_item, etc)
-        #dict_of_quali = dict()
-
-        # Iterating through list of user top 3 preferences to get final top_1_item and store in a dict (e.x.: tênis)
-        #for j in range(0, 3):
-        #    if values_quali_list[j] in item_description_dict.keys():
-        #        preferencia = item_description_dict[values_quali_list[j]]
-        #        dict_of_quali['top_{}_item'.format(j + 1)] = getattr(query_traits, preferencia)
-
-        #list_of_quali = list(dict_of_quali.values())
 
         return render_template("profile.html", **users_dict, marked=marked, **qualitative_descriptions)
                                #list_of_quali=list_of_quali)   **dict_of_quali,
@@ -599,7 +566,7 @@ def match():
                 x = sorted(x, reverse=True)
 
         info_list = ['name', 'age', 'curso', 'top_1', 'top_2', 'top_3', 'top_1_item', 'top_2_item', 'top_3_item',
-                     'top_1_text', 'top_2_text', 'top_3_text']
+                     'top_1_text', 'top_2_text', 'top_3_text', 'user_id']
 
         top_people = list()
         for i in range(0, number_of_rows):
@@ -610,10 +577,15 @@ def match():
                 person[item] = getattr(query_top_people, item)
             top_people.append(person)
 
-        print(people_in_order)
-        print(top_people)
-
         return render_template("to-match.html", top_people=top_people)
+
+    elif request.method == "POST":
+
+        person_id = request.form.get('person_id')
+        print(person_id)
+
+        return redirect("/match")
+
 
 
 @app.route("/matched", methods=["GET", "POST"])

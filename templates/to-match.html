@@ -39,8 +39,6 @@
 <div class="s-about-2">
 <section>
     <h1> Lista de sugestões</h1>
-
-    <form class="label" action="/to-match" method="POST">
         <!-- form to understand interests -->
             <!--<label> Meus interesses</label>-->
         <div class="align-form">
@@ -52,26 +50,36 @@
                 <div class="item-plan__block">
                   {% for item in top_people %}
                     <div class="row">
+                        <form action="/match" method="POST">
                         <h3>{{ item["name"] }}</h3>
                         <p><tr>{{item["age"]}}, {{item["curso"]}}</tr></p>
-                        <button class="btn--primary" style="float: right;">MATCH!</button>
+                        <button method="post" class="btn--primary" style="float: right;" type="submit"
+                                                              name ="person_id" id="person_id"
+                                                              value="{{item["user_id"]}}">MATCH!</button>
                         <h5> Interesses:</h5>
                         <p><tr>{{item["top_1"]}}</tr></p>
                         <p><td>{{item["top_2"]}}</td></p>
                         <p><td>{{item["top_3"]}}</td></p><br>
+                        </form>
                         <hr color="grey">
                   </div>
                     {% endfor %}
             </div>
 
-<script>
         </div>
-        <button type="submit" class="button">Submeter</button>
-    </form>
 </section>
 </div>
 
 </body>
+<script>
+    document.getElementById("person_id").addEventListener("click", myFunction);
+    object.onclick = function(){myFunction};
+     myFunction() {
+        person_id = document.getElementById("person_id").value
+        }
+     var person_id = document.getElementById("person_id").value;
+
+</script>
 
 </html>
 
