@@ -50,15 +50,18 @@
             <br>
             <div class="column">
                 <div class="item-plan__block">
-                  {% for item in top_people %}
+                  {% for item in double_matches %}
                     <div class="row">
                         <h3>{{ item["name"] }}</h3>
                         <p><tr>{{item["age"]}}, {{item["curso"]}}</tr></p>
-                        <button class="btn--primary" style="float: right;">MATCH!</button>
+                        <p><tr>{{item["facebook"]}}</tr></p>
                         <h5> Interesses:</h5>
                         <p><tr>{{item["top_1"]}}</tr></p>
+                        <p><tr>{{item["top_1_item"]}}</tr></p>
                         <p><td>{{item["top_2"]}}</td></p>
+                        <p><tr>{{item["top_2_item"]}}</tr></p>
                         <p><td>{{item["top_3"]}}</td></p><br>
+                        <p><tr>{{item["top_3_item"]}}</tr></p>
                         <hr color="grey">
                     </div>
                     {% endfor %}

@@ -18,6 +18,8 @@ import smtplib
 from helpers import login_required, apology
 
 lista = list()
+one_way_match = list()
+one_way_dict = dict()
 traits_db_fields = ['lf1', 'lf2', 'lf3', 'lf4', 'lf5','esportes', 'lf6', 'jogos', 'lf7', 'eventos', 'lf8', 'arte',
                     'lf9', 'lf10', 'lf11', 'lf12', 'lf13', 'lf14', 'religiao', 'lf15', 'lf16', 'lf17', 'lf18',
                     'ar_livre', 'lf19', 'manuais', 'lf20', 'estudos', 'lf21', 'lf22', 'lf23', 'lf24']
@@ -86,6 +88,32 @@ class User(db.Model):
         self.username = username
         self.hashword = hashword
         self.email = email
+
+class Matches(db.Model):
+    __table__ = db.Model.metadata.tables['matches']
+
+    def __init__(self, user_id, match1, match2, match3, match4, match5, match6, match7, match8, match9, match10, match11, match12, match13, match14, match15, match16, match17, match18, match19, match20):
+        self.user_id = user_id
+        self.match1 = match1
+        self.match2 = match2
+        self.match3 = match3
+        self.match4 = match4
+        self.match5 = match5
+        self.match6 = match6
+        self.match7 = match7
+        self.match8 = match8
+        self.match9 = match9
+        self.match10 = match10
+        self.match11 = match11
+        self.match12 = match12
+        self.match13 = match13
+        self.match14 = match14
+        self.match15 = match15
+        self.match16 = match16
+        self.match17 = match17
+        self.match18 = match18
+        self.match19 = match19
+        self.match20 = match20
 
 class Itens(db.Model):
     __table__ = db.Model.metadata.tables['itens']
@@ -577,21 +605,82 @@ def match():
                 person[item] = getattr(query_top_people, item)
             top_people.append(person)
 
+            
+
         return render_template("to-match.html", top_people=top_people)
 
     elif request.method == "POST":
 
         person_id = request.form.get('person_id')
-        print(person_id)
+        if person_id:
+            one_way_match.append(person_id)
+        # Removing duplicates
+        one_way = list(dict.fromkeys(one_way_match))
+
+        one_way_dict['user_id'] = session['user_id']
+        for i in range(0, 20):
+            match_key = 'match{}'.format(i+1)
+            if len(one_way) > i:
+                one_way_dict[match_key] = one_way[i]
+            else:
+                one_way_dict[match_key] = 0
+
+        user = Matches.query.filter_by(user_id=session['user_id']).first()
+        if not user:
+            matches_entry = Matches(**one_way_dict)
+            db.session.add(matches_entry)
+            db.session.commit()
+        else:
+            # iterate through keys and values of a dictionary
+            for key, value in one_way_dict.items():
+                # setattr(object (observation), attribute, value)
+                setattr(user, key, value)
+            db.session.commit()
 
         return redirect("/match")
-
 
 
 @app.route("/matched", methods=["GET", "POST"])
 @login_required
 def matched():
-    return render_template("matched.html")
+    if request.method == "GET":
+        user_id = session['user_id']
+        match_query = Matches.query.filter_by(user_id=user_id).first()
+        match_keys = list()
+        for i in range(1, 21):
+            match_keys.append("match{}".format(i))
+        match = dict()
+        if match_query:
+            for i in range(0, 20):
+                match[match_keys[i]] = getattr(match_query, match_keys[i])
+        lista_users = list(match.values())
+
+        user_fields = ["curso", "age", "sex", "ice_breaker", "sexes", "name", "top_1", "top_2", "top_3", "facebook", "top_1_text", "top_2_text", "top_3_text", "top_1_item", "top_2_item", "top_3_item"]
+
+        # list of dicts
+        double_matches = list()
+        dict_pessoa = dict()
+        pessoa_dados = dict()
+
+
+        for item in lista_users:
+            if item != 0:
+                person_query = Matches.query.filter_by(user_id=item).first()
+                if person_query:
+                    for i in range(0, 20):
+                        dict_pessoa[match_keys[i]] = getattr(person_query, match_keys[i])
+                    for element in dict_pessoa.values():
+                        if element == user_id:
+                            query_match = User.query.filter_by(user_id=item).first()
+                            for field in user_fields:
+                                pessoa_dados[field] = getattr(query_match, field)
+                            double_matches.append(pessoa_dados)
+                    print(double_matches)
+
+        #else:
+            # mensagem: preencha matches first
+
+        return render_template("matched.html", double_matches=double_matches)
 
 # Log out function - copied from Problem Set 8
 @app.route("/logout")
