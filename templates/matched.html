@@ -50,7 +50,7 @@
             <br>
             <div class="column">
                 <div class="item-plan__block">
-                  {% for item in double_matches %}
+                  {% for item in double_matches_list %}
                     <div class="row">
                         <h3>{{ item["name"] }}</h3>
                         <p><tr>{{item["age"]}}, {{item["curso"]}}</tr></p>
@@ -65,6 +65,7 @@
                         <hr color="grey">
                     </div>
                     {% endfor %}
+                    <p>{{message}}</p>
                 </div>
             </div>
 
