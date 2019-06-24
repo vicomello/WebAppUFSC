@@ -450,11 +450,6 @@ def check():
 
 # Login function - copied from Problem set 8
 
-@app.route("/rascunho", methods=["GET", "POST"])
-def rascunho():
-    if request.method == "GET":
-        return render_template("rascunho2.html")
-
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
@@ -493,22 +488,42 @@ def match():
     # Get the personality data from the user
     if request.method == "GET":
 
-        #======================== PART 1: Fazer match com as principais caractetisticas (table users) ===========================
+        user_id = session['user_id']
+
+        # ============================== PART 1: MOSTRAR OPÇÕES DE PESSOAS QUE JÁ TEM INTERESSE NO USER ===============================
+
+        keywords = list()
+        for i in range(1, 21):
+            key = 'match{}'.format(i)
+            keywords.append(key)
+
+        pessoas_possivelmente_interessadas = Matches.query.all()
+        pessoas_interessadas = list()
+
+        for row in pessoas_possivelmente_interessadas:
+            for i in range(0, 20):
+                key = keywords[i]
+                match_por_match = getattr(row, key)
+                if match_por_match == user_id:
+                    pessoa_interessada = getattr(row, 'user_id')
+                    pessoas_interessadas.append(pessoa_interessada)
+
+        #======================== PART 2: CALCULAR COMPATIBILIDADE COM USERS ===========================
 
         # Variáveis que vão ser usadas na primeira parte do match
         profile_things = ['top_1', 'top_2', 'top_3']
         profile_items = ['top_1_item', 'top_2_item', 'top_3_item']
         items_to_query = ['top_1', 'top_2', 'top_3', 'top_1_item', 'top_2_item', 'top_3_item']
         # Querying
-        user_id = session['user_id']
         user = User.query.filter_by(user_id=user_id).first()
         # Dict com as infos do user
         top_info_user = {x: getattr(user, x) for x in items_to_query}
-        # Preferência de sexos (pegar base toda ou apenas aqueles com mesmo sexo)
-        preference = getattr(user, 'sexes')
 
         # Querying com base na preferência
         sexo = getattr(user, 'sex')
+        # Preferência de sexos (pegar base toda ou apenas aqueles com mesmo sexo)
+        preference = getattr(user, 'sexes')
+
         if preference == 0:
             query = User.query.filter_by(sex=sexo).all()
         elif preference == 1 and sexo == 1:
@@ -528,13 +543,6 @@ def match():
         # Auxiliary list
         people_in_order = list()
 
-        # Get traits info from user
-        lf_dict = dict()
-        query_traits = Traits.query.filter_by(user_id=user_id).first()
-        for i in range(1, 25):
-            lf_key = 'lf{}'.format(i)
-            lf_dict[lf_key] = getattr(query_traits, lf_key)
-
         # Loop compara cada pessoa na base com o user e retorna um grau de compatibilidade
         for row in query:
             row_id = getattr(row, 'user_id')
@@ -551,7 +559,14 @@ def match():
                             if top_info_user[item] == top_info_pessoa[item]:
                                 compatibilidade = compatibilidade + 20
 
-                # ============================== PARTE 2: Outras variáveis de interesses ==============================
+                # ========================= PARTE 3: Outras variáveis de interesses ==========================
+
+                # Get traits info from user
+                lf_dict = dict()
+                query_traits = Traits.query.filter_by(user_id=user_id).first()
+                for i in range(1, 25):
+                    lf_key = 'lf{}'.format(i)
+                    lf_dict[lf_key] = getattr(query_traits, lf_key)
 
                 query_traits_row = Traits.query.filter_by(user_id=row_id).first()
                 if query_traits_row:
@@ -560,9 +575,9 @@ def match():
                         lf_key = 'lf{}'.format(i)
                         row_dict[lf_key] = getattr(query_traits_row, lf_key)
 
-                    for i in range(1, 25):
-                        if lf_dict['lf{}'.format(i)] == 1 and lf_dict['lf{}'.format(i)] == row_dict['lf{}'.format(i)]:
-                            compatibilidade = compatibilidade + 2
+                for i in range(1, 25):
+                    if lf_dict['lf{}'.format(i)] == 1 and lf_dict['lf{}'.format(i)] == row_dict['lf{}'.format(i)]:
+                        compatibilidade = compatibilidade + 2
 
                 compatibility_of_users['{}'.format(row_id)] = compatibilidade
                 x = ((v, k) for k, v in compatibility_of_users.items())
@@ -571,7 +586,10 @@ def match():
         info_list = ['name', 'age', 'curso', 'top_1', 'top_2', 'top_3', 'top_1_item', 'top_2_item', 'top_3_item',
                      'top_1_text', 'top_2_text', 'top_3_text', 'user_id']
 
+
         # ==================== PART 3: Retirar da lista as pessoas com as quais ele já marcou interesse ====================
+
+        # Pegando info das pessoas com quem ele já marcou interesse
         db_match = Matches.query.filter_by(user_id=user_id).first()
         db_match_list = list()
         if db_match:
@@ -581,16 +599,27 @@ def match():
                 if mate != 0:
                     db_match_list.append(mate)
 
+
         top_people = list()
-        for i in range(0, number_of_rows):
+
+        for i in range(len(x)):
             id_person = (int(x[i][1]))
+            # Esse if filtra as pessoas com quem ele já mostrou interesse
             if id_person not in db_match_list:
                 people_in_order.append(x[i][1])
-                query_top_people = User.query.filter_by(user_id=id_person).first()
-                person = dict()
-                for item in info_list:
-                    person[item] = getattr(query_top_people, item)
-                top_people.append(person)
+
+        # New list of dicts to store the info of the people who showed interest in user
+        for item in pessoas_interessadas:
+            if item not in people_in_order:
+                if item not in db_match_list:
+                    people_in_order.append(item)
+
+        for item in people_in_order:
+            query_top_people = User.query.filter_by(user_id=item).first()
+            person = dict()
+            for field in info_list:
+                person[field] = getattr(query_top_people, field)
+            top_people.append(person)
 
         if len(top_people) == 0:
             message = "As sugestões de pessoas acabaram. Caso você ainda não tenha tendado se conectar com ninguém," \
@@ -598,7 +627,10 @@ def match():
                       "tenha dado match com todas as opções, você pode mudar suas preferências em interesses e perfil e" \
                       " tentar novamente."
         else:
-            message = "Sucess"
+            message = ""
+
+
+
 
         return render_template("to-match.html", top_people=top_people, message=message)
 
@@ -666,8 +698,6 @@ def matched():
         query_pessoa = dict()
         dados_double_match = dict()
 
-        print(one_way_matched_users)
-
         for item in one_way_matched_users:
             if item != 0:
                 person_query = Matches.query.filter_by(user_id=item).first()
@@ -681,8 +711,6 @@ def matched():
                             for field in user_fields:
                                 key[field] = getattr(person_double_matched, field)
                             double_matches_list.append(key)
-
-        print(double_matches_list)
 
         if len(double_matches_list) == 0:
             message = "As pessoas ainda não tiveram a chance de ver seu perfil e se conectar com você. Espere por um " \
