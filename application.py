@@ -1,24 +1,14 @@
-import os
 
-from cs50 import SQL
 from flask import Flask, jsonify, redirect, render_template, request, session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import or_
 from flask_session import Session
 from tempfile import mkdtemp
-from werkzeug.exceptions import default_exceptions
 from werkzeug.security import check_password_hash, generate_password_hash
-import sys
-from collections import Counter, defaultdict
-from itertools import groupby
-from operator import itemgetter
-from timeit import timeit
-import smtplib
 
 from helpers import login_required, apology
 
 lista = list()
-one_way_match = list()
 one_way_dict = dict()
 traits_db_fields = ['lf1', 'lf2', 'lf3', 'lf4', 'lf5','esportes', 'lf6', 'jogos', 'lf7', 'eventos', 'lf8', 'arte',
                     'lf9', 'lf10', 'lf11', 'lf12', 'lf13', 'lf14', 'religiao', 'lf15', 'lf16', 'lf17', 'lf18',
@@ -312,6 +302,8 @@ def profile():
         # Querying from 3 different tables needed
         query = User.query.filter_by(user_id=session['user_id']).first()
         query_traits = Traits.query.filter_by(user_id=session['user_id']).first()
+        if not query_traits:
+            return apology("Você deve preencher seus interesses primeiro.")
         query_itens = Itens.query.first()
 
         # Empty dict to store values from db
@@ -518,11 +510,15 @@ def match():
         user = User.query.filter_by(user_id=user_id).first()
         # Dict com as infos do user
         top_info_user = {x: getattr(user, x) for x in items_to_query}
+        if not top_info_user:
+            return apology("Você deve preencher primeiro seus interesses e depois completar seu perfil.")
 
         # Querying com base na preferência
         sexo = getattr(user, 'sex')
         # Preferência de sexos (pegar base toda ou apenas aqueles com mesmo sexo)
         preference = getattr(user, 'sexes')
+        if not preference:
+            return apology("Você deve preencher seus interesses e completar seu perfil antes de acessar as sugestões.", 400)
 
         if preference == 0:
             query = User.query.filter_by(sex=sexo).all()
@@ -599,22 +595,40 @@ def match():
                 if mate != 0:
                     db_match_list.append(mate)
 
+        if len(db_match_list) == 20:
+            mensagem = "Você excedeu o limite de conexões. Auarde alguns migUFSCs aparecerem na sua lista para tentar se conectar com mais pessoas."
+        else:
+            mensagem = ""
+
+
 
         top_people = list()
 
+        # Adicionando à lista todas as pessoas que deram comparibilidade
         for i in range(len(x)):
-            id_person = (int(x[i][1]))
+            id_person = int(x[i][1])
             # Esse if filtra as pessoas com quem ele já mostrou interesse
             if id_person not in db_match_list:
-                people_in_order.append(x[i][1])
+                people_in_order.append(id_person)
 
-        # New list of dicts to store the info of the people who showed interest in user
+        # Mostrar as pessoas que mostraram interesse no user
         for item in pessoas_interessadas:
+            print("item: {}".format(item))
+            # Filtrar aquelas que nao aparecem na lista de compatibilidade (para nao aparecer 2x)
             if item not in people_in_order:
+                # Filtrar aquelas que ele já marcou que tem interesse (para nao repetirem)
                 if item not in db_match_list:
                     people_in_order.append(item)
 
-        for item in people_in_order:
+        if len(people_in_order) > 10:
+            iteracoes = 10
+        else:
+            iteracoes = len(people_in_order)
+
+            print("people in order: {}".format(people_in_order))
+
+        for i in range(iteracoes):
+            item = people_in_order[i]
             query_top_people = User.query.filter_by(user_id=item).first()
             person = dict()
             for field in info_list:
@@ -622,21 +636,19 @@ def match():
             top_people.append(person)
 
         if len(top_people) == 0:
-            message = "As sugestões de pessoas acabaram. Caso você ainda não tenha tendado se conectar com ninguém," \
+            message = "As sugestões de pessoas acabaram. Caso você ainda não tenha tentado se conectar com ninguém," \
                       " certifique-se de preencher os dados de seus interesses e suas informações de perfil. Caso já " \
                       "tenha dado match com todas as opções, você pode mudar suas preferências em interesses e perfil e" \
                       " tentar novamente."
         else:
             message = ""
 
-
-
-
-        return render_template("to-match.html", top_people=top_people, message=message)
+        return render_template("to-match.html", top_people=top_people, message=message, mensagem=mensagem)
 
     elif request.method == "POST":
 
         # Getting the data already saved in matches table
+        one_way_match = list()
         matches_table_data = Matches.query.filter_by(user_id=session['user_id']).first()
         if matches_table_data:
             for i in range(1, 21):
@@ -645,12 +657,16 @@ def match():
                 if mate != 0:
                     one_way_match.append(mate)
 
+        print("one_way_match is {}".format(one_way_match))
+
         # Getting new matches from match form
         person_id = request.form.get('person_id')
         if int(person_id) not in one_way_match:
             one_way_match.append(int(person_id))
         # Removing duplicates
         one_way = list(dict.fromkeys(one_way_match))
+
+        print("one way is {}".format(one_way))
 
         one_way_dict['user_id'] = session['user_id']
         for i in range(0, 20):
@@ -663,6 +679,7 @@ def match():
         user = Matches.query.filter_by(user_id=session['user_id']).first()
         if not user:
             matches_entry = Matches(**one_way_dict)
+            print("matches_entry is {}".format(matches_entry))
             db.session.add(matches_entry)
             db.session.commit()
         else:
@@ -681,6 +698,8 @@ def matched():
     if request.method == "GET":
         user_id = session['user_id']
         matches_query = Matches.query.filter_by(user_id=user_id).first()
+        if not matches_query:
+            return apology("Você deve se conectar com as sugestões antes.")
         match_keys = list()
         matches = dict()
         for i in range(1, 21):
