@@ -1,33 +1,279 @@
 {% block main %}
-
 <!DOCTYPE html>
 <html lang="en">
-    <!-- page title -->
-    <div class="header">
-		<h1>My Interests</h1>
-	</div>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="static/main.css">
+<head>
+    <meta charset="UTF-8">
+    <title>Meus Interesses</title>
+    <link rel="stylesheet" href="static/main3.css">
     <link rel="stylesheet" href="static/custom.css">
+    <link rel="stylesheet" href="static/vendor.css">
+    <link rel="stylesheet" href="static/base.css">
+</head>
+
+<!-- ======= start of body ====== -->
+<body>
+
+<!-- ====== menu bar / header ======= -->
+
+    <header class="s-header">
+        <div class="header-logo">
+            <a class="site-logo" href="/index">
+                <a class="mark" href="/index" title="intro">WebAppUFSC</a>
+            </a>
+        </div>
+        <nav class="row header-nav-wrap wide">
+            <div class="header">
+                <ul class="header-main-nav">
+                    <li><a href="/index" title="blog" method="get">Home</a></li>
+                    <li><a href="/" title="intro" method="get">Sobre</a></li>
+                    <li><a href="/help" title="help" method="get">Como funciona</a></li>
+                    <li><a href="/profile" title="profile" method="get">Profile</a></li>
+                    <li><a href="/logout" title="logout">Sair</a></li>
+                </ul>
+            </div>
+        </nav>
+        <a class="header-menu-toggle"><span>Menu</span></a>
+    </header>
+
+<div class="s-about-2">
+<section>
+    <h1> Meus interesses</h1>
+
+    <p class="lead"> blabla</p>
+    <div class="align-form">
+        <P>Marque todas as frases que descrevem atividades para as quais você gostaria de um parceiro(a).</P>
+        <p><strong> Eu gostaria de conhecer pessoas para... </strong></p>
+    </div>
     <form class="label" action="/lifestyle" method="POST">
         <!-- form to understand interests -->
-        <label><input type="checkbox" name="lf1" value="1"> Hanging with someone who likes sports is important to me.<br>
-        <input type="checkbox" name="lf2" value="1"> Hanging with someone who likes the same sports as I do is important to me.<br>
-        <input type="checkbox" name="lf3" value="1"> Good encounters are based on good deep conversations.<br>
-        <input type="checkbox" name="lf4" value="1"> Being able to talk about books creates good friendships.<br>
-        <input type="checkbox" name="lf5" value="1"> I like people who I can laugh with.<br>
-        <input type="checkbox" name="lf6" value="1"> Being funny is one of the things I care the most about in people.<br>
-        <input type="checkbox" name="lf7" value="1"> Most of my friends are gamers.<br>
-        <input type="checkbox" name="lf8" value="1"> I would like to have friends who live a mindful life.<br>
-        <input type="checkbox" name="lf9" value="1"> It’s important that friends like to party with me.<br>
-        <input type="checkbox" name="lf10" value="1"> I prefer to socialize in places other than parties.<br>
-        <input type="checkbox" name="lf11" value="1"> I only befriend popular people.<br>
-        <input type="checkbox" name="lf12" value="1"> I prefer friends that I can be goofy around.<br>
-        <input type="checkbox" name="lf13" value="1"> I would love to enjoy the arts with friends.<br>
-        <input type="checkbox" name="lf14" value="1"> I would only befriend someone who is an important, respectful person.<br>
-        <input type="checkbox" name="lf15" value="1"> I am open to new types of friends.<br></label><br>
-        <button type="submit" class="button">Submit</button>
+            <!--<label> Meus interesses</label>-->
+        <div class="align-form">
+
+            {% if lf1 == 1 %}
+                {% set selected1 = 'checked' %}
+            {% else %}
+                {% set selected1 = '' %}
+            {% endif %}
+            {% if lf2 == 1 %}
+                {% set selected2 = 'checked' %}
+            {% else %}
+                {% set selected2 = '' %}
+            {% endif %}
+            {% if lf3 == 1 %}
+                {% set selected3 = 'checked' %}
+            {% else %}
+                {% set selected3 = '' %}
+            {% endif %}
+            {% if lf4 == 1 %}
+            {% set selected4 = 'checked' %}
+            {% else %}
+            {% set selected4 = '' %}
+            {% endif %}
+            {% if lf5 == 1 %}
+            {% set selected5 = 'checked' %}
+            {% else %}
+            {% set selected5 = '' %}
+            {% endif %}
+            {% if lf6 == 1 %}
+            {% set selected6 = 'checked' %}
+            {% else %}
+            {% set selected6 = '' %}
+            {% endif %}
+            {% if lf1 == 1 %}
+            {% set selected7 = 'checked' %}
+            {% else %}
+            {% set selected7 = '' %}
+            {% endif %}
+            {% if lf8 == 1 %}
+            {% set selected8 = 'checked' %}
+            {% else %}
+            {% set selected8 = '' %}
+            {% endif %}
+            {% if lf9 == 1 %}
+            {% set selected9 = 'checked' %}
+            {% else %}
+            {% set selected9 = '' %}
+            {% endif %}
+            {% if lf10 == 1 %}
+            {% set selected10 = 'checked' %}
+            {% else %}
+            {% set selected10 = '' %}
+            {% endif %}
+            {% if lf11 == 1 %}
+            {% set selected11 = 'checked' %}
+            {% else %}
+            {% set selected11 = '' %}
+            {% endif %}
+            {% if lf12 == 1 %}
+            {% set selected12 = 'checked' %}
+            {% else %}
+            {% set selected12 = '' %}
+            {% endif %}
+            {% if lf13 == 1 %}
+            {% set selected13 = 'checked' %}
+            {% else %}
+            {% set selected13 = '' %}
+            {% endif %}
+            {% if lf14 == 1 %}
+            {% set selected14 = 'checked' %}
+            {% else %}
+            {% set selected14 = '' %}
+            {% endif %}
+            {% if lf15 == 1 %}
+            {% set selected15 = 'checked' %}
+            {% else %}
+            {% set selected15 = '' %}
+            {% endif %}
+            {% if lf16 == 1 %}
+            {% set selected16 = 'checked' %}
+            {% else %}
+            {% set selected16 = '' %}
+            {% endif %}
+            {% if lf17 == 1 %}
+            {% set selected17 = 'checked' %}
+            {% else %}
+            {% set selected17 = '' %}
+            {% endif %}
+            {% if lf18 == 1 %}
+            {% set selected18 = 'checked' %}
+            {% else %}
+            {% set selected18 = '' %}
+            {% endif %}
+            {% if lf19 == 1 %}
+            {% set selected19 = 'checked' %}
+            {% else %}
+            {% set selected19 = '' %}
+            {% endif %}
+            {% if lf20 == 1 %}
+            {% set selected20 = 'checked' %}
+            {% else %}
+            {% set selected20 = '' %}
+            {% endif %}
+            {% if lf21 == 1 %}
+            {% set selected21 = 'checked' %}
+            {% else %}
+            {% set selected21 = '' %}
+            {% endif %}
+            {% if lf22 == 1 %}
+            {% set selected22 = 'checked' %}
+            {% else %}
+            {% set selected22 = '' %}
+            {% endif %}
+            {% if lf23 == 1 %}
+            {% set selected23 = 'checked' %}
+            {% else %}
+            {% set selected23 = '' %}
+            {% endif %}
+            {% if lf24 == 1 %}
+            {% set selected24 = 'checked' %}
+            {% else %}
+            {% set selected24 = '' %}
+            {% endif %}
+            <input type="checkbox" name="lf1" value="1" {{selected1}}> Realizar viagens.<br>
+            <input type="checkbox" name="lf2" value="1" {{selected2}}> Experimentar novas culinárias.<br>
+            <input type="checkbox" name="lf3" value="1" {{selected3}}> Socializar em restaurantes ou bares.<br>
+            <input type="checkbox" name="lf4" value="1" {{selected4}}> Compartilhar interesses sobre livros e literatura.<br>
+            <input type="checkbox" name="lf5" value="1" {{selected5}}> Praticar esportes.
+            <select name="esportes" class="btn-2 btn--primary">
+                <option selected disabled value="">Especifique</option>
+                {% for item in sports %}
+                    {% if esportes == item %}
+                    {% set selected1 = 'selected' %}
+                    {% endif %}
+                <option {{selected1}}> {{ item }}</option>
+                {% endfor %}
+            </select><br>
+            <input type="checkbox" name="lf6" value="1" {{selected6}}> Jogar jogos eletrônicos.
+            <select name="jogos" class="btn-2 btn--primary">
+                <option selected disabled value="">Especifique</option>
+                {% for item in games %}
+                    {% if jogos == item %}
+                    {% set selected1 = 'selected' %}
+                    {% endif %}
+                <option {{selected1}}> {{ item }}</option>
+                {% endfor %}
+            </select><br>
+            <input type="checkbox" name="lf7" value="1" {{selected7}}> Ir a eventos relacionados a arte.
+            <select name="eventos" class="btn-2 btn--primary">
+                <option selected disabled value="">Especifique</option>
+                {% for item in events %}
+                    {% if eventos == item %}
+                    {% set selected1 = 'selected' %}
+                    {% endif %}
+                <option {{selected1}}> {{ item }}</option>
+                {% endfor %}
+            </select> <br>
+            <input type="checkbox" name="lf8" value="1" {{selected8}}> Produzir arte comigo.
+            <select name="arte" class="btn-2 btn--primary">
+                <option selected disabled value="">Especifique</option>
+                {% for item in art %}
+                    {% if arte == item %}
+                    {% set selected1 = 'selected' %}
+                    {% endif %}
+                <option {{selected1}}> {{ item }}</option>
+                {% endfor %}
+            </select> <br>
+            <input type="checkbox" name="lf9" value="1" {{selected9}}> Conhecer lugares novos.<br>
+            <input type="checkbox" name="lf10" value="1" {{selected10}}> Ir a festas.<br>
+            <input type="checkbox" name="lf11" value="1" {{selected11}}> Ficar de bobeira (sem objetivo).<br>
+            <input type="checkbox" name="lf12" value="1" {{selected12}}> Conversar abertamente sobre o que penso e sinto.<br>
+            <input type="checkbox" name="lf13" value="1" {{selected13}}> Passar tempo com animais.<br>
+            <input type="checkbox" name="lf14" value="1" {{selected14}}> Ir a eventos religiosos (culto, missa, etc).
+            <select name="religiao" class="btn-2 btn--primary">
+                <option selected disabled value="">Especifique</option>
+                {% for item in religion %}
+                    {% if religiao == item %}
+                    {% set selected1 = 'selected' %}
+                    {% endif %}
+                <option {{selected1}}> {{ item }}</option>
+                {% endfor %}
+            </select> <br>
+            <input type="checkbox" name="lf15" value="1" {{selected15}}> Me ensinarem novas habilidades.<br>
+            <input type="checkbox" name="lf16" value="1" {{selected16}}> Quem eu possa ensinar novas habilidades.<br>
+            <input type="checkbox" name="lf17" value="1" {{selected17}}> Conversar ou debater sobre tópicos específicos. <br>
+            <input type="checkbox" name="lf18" value="1" {{selected18}}> Realizar atividades ao ar livre.
+            <select name="ar_livre" class="btn-2 btn--primary">
+                <option selected disabled value="">Especifique</option>
+                {% for item in air %}
+                    {% if ar_livre == item %}
+                    {% set selected1 = 'selected' %}
+                    {% endif %}
+                <option {{selected1}}> {{ item }}</option>
+                {% endfor %}
+            </select> <br>
+            <input type="checkbox" name="lf19" value="1" {{selected19}}> Fazer trabalhos manuais.
+            <select name="manuais" class="btn-2 btn--primary">
+                <option selected disabled value="">Especifique</option>
+                {% for item in manuals %}
+                    {% if manuais == item %}
+                    {% set selected1 = 'selected' %}
+                    {% endif %}
+                <option {{selected1}}> {{ item }}</option>
+                {% endfor %}
+            </select> <br>
+            <input type="checkbox" name="lf20" value="1" {{selected20}}> Criar grupos de conversa ou de estudos.
+            <select name="estudos" class="btn-2 btn--primary">
+                <option selected disabled value="">Especifique</option>
+                {% for item in studies %}
+                    {% if estudos == item %}
+                    {% set selected1 = 'selected' %}
+                    {% endif %}
+                <option {{selected1}}> {{ item }}</option>
+                {% endfor %}
+            </select> <br>
+            <input type="checkbox" name="lf21" value="1" {{selected21}}> Cozinhar ou produzir alimentos/bebidas.<br>
+            <input type="checkbox" name="lf22" value="1" {{selected22}}> Realizar trabalhos voluntários ou sociais.<br>
+            <input type="checkbox" name="lf23" value="1" {{selected23}}> Assistir séries ou filmes comigo.<br>
+            <input type="checkbox" name="lf24" value="1" {{selected24}}> Acompanhar eventos esportivos comigo.<br>
+            <br>
+            </div>
+        <button type="submit" class="button">Submeter</button>
     </form>
+</section>
+</div>
+
+</body>
+
 </html>
 
 {% endblock %}

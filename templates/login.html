@@ -1,55 +1,75 @@
-<!--
-Author: Colorlib
-Author URL: https://colorlib.com
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
--->
 <!DOCTYPE html>
-
-<html>
+<html class="no-js" lang="en">
 	<head>
-		<title>Log In</title>
+
+		<!--- basic page needs
+		================================================== -->
+		<meta charset="utf-8">
+		<title>Entrar</title>
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<!-- mobile specific metas
+		================================================== -->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- CSS
+		================================================== -->
+		<link rel="stylesheet" href="static/base.css">
+		<link rel="stylesheet" href="static/vendor.css">
+		<link rel="stylesheet" href="static/main.css">
+		<link rel="stylesheet" href="static/css.css">
+    	<link rel="stylesheet" href="static/main2.css">
+
+		<!-- script
+		================================================== -->
+		<script src="static/js/modernizr.js"></script>
+		<script src="static/js/pace.min.js"></script>
+
+		<!-- favicons
+		================================================== -->
+		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+		<link rel="icon" href="favicon.ico" type="image/x-icon">
+	</head>
+
+	<body id="top">
+
+		<!-- header
+		================================================== -->
+		<header class="s-header">
+
+			<div class="header-logo">
+				<a class="site-logo" href="/">
+					<img src="static/images/logo.svg" alt="Homepage">
+				</a>
+			</div>
+
+			<nav class="row header-nav-wrap wide">
+				<ul class="header-main-nav">
+					<li><a href="/" title="intro" method="get">Sobre</a></li>
+					<li><a href="/index" title="intro" method="get">Início</a></li>
+					<li><a href="/register" title="register" method="get">Registrar-me</a></li>
+					<li class="current"><a href="/login" title="login" method="get">Entrar</a></li>
+				</ul>
+			</nav>
+			<a class="header-menu-toggle" href="#"><span>Menu</span></a>
+
+		</header> <!-- end header -->
+		<!-- ====HEADER COPIED FROM BLOG3.HTML FILE==== -->
+
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-<!-- Custom Theme files -->
-	<!--	<link href="../../css.css" rel="stylesheet" type="text/css" media="all" />-->
-		<link href="static/css.css" rel="stylesheet">
-		<link rel="stylesheet" href="static/base.css">
-    	<link rel="stylesheet" href="static/vendor.css">
-    	<link rel="stylesheet" href="static/main2.css">
 
-<!-- //Custom Theme files -->
 <!-- web font -->
 		<link href="//fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i" rel="stylesheet">
 <!-- //web font -->
-	</head>
+
 	<body>
-		<!-- header
-		   ================================================== -->
-		<header class="s-header">
-
-		    <div class="header-logo">
-	            <a class="site-logo" href="blog.html">
-	                 <a class="mark" title="intro">UnI</a>
-	            </a>
-	        </div>
-
-		    <nav class="row header-nav-wrap wide">
-		        <ul class="header-main-nav">
-                	<li><a class="smoothscroll" href="/" title="intro" method="get">Home</a></li>
-                	<li><a class="smoothscroll" href="/register" title="register" method="get">Register</a></li>
-                	<li class="current"><a class="smoothscroll" href="/login" title="login" method="get">Log In</a></li>
-            	</ul>
-		    </nav>
-
-		    <a class="header-menu-toggle" href="#"><span>Menu</span></a>
-
-	    </header> <!-- end header -->
 		<!-- main -->
 		<div class="main-w3layouts wrapper">
 			<!-- title -->
-			<h1>Log In</h1>
+			<h1>Entrar</h1>
 			<div class="main-agileinfo">
 				<div class="agileits-top">
 					<form action="/login" method="post">
@@ -62,12 +82,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<input type="submit" value="LOGIN">
 					</form>
 					<!-- go to register if don't have an account -->
-					<p>Don't have an Account? <a href="/register"> Register Now!</a></p>
+					<p>Ainda não tem uma conta? <a href="/register"> Inscreva-se!</a></p>
 				</div>
 			</div>
 			<!-- copyright -->
 			<div class="colorlibcopy-agile">
-				<p>© 2018 Colorlib Signup Form. All rights reserved | Design by <a href="https://colorlib.com/" target="_blank">Colorlib</a></p>
+				<p>Design by <a href="https://colorlib.com/" target="_blank">Colorlib</a></p>
 			</div>
 			<!-- //copyright -->
 		</div>

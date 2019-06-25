@@ -2,14 +2,9 @@
 
 /*-- lables */
 .label label {
-  display: inline-block;
-  background-color: #ddd;
-  padding: 4px 11px;
   font-family: Arial;
-  font-size: 16px;
-  cursor: pointer;
-  margin-left: 4em;
-  margin-top: 3em;
+  font-size: 14px;
+  margin-top: 1em;
 }
 
 .label input[type="checkbox"]:checked+label {

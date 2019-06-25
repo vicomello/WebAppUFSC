@@ -248,12 +248,13 @@
     var clSmoothScroll = function() {
 
         $('.smoothscroll').on('click', function (e) {
-            var target = this.hash,
+            var target = window.location.hash,
             $target    = $(target);
 
                 e.preventDefault();
                 e.stopPropagation();
 
+            /* #TODO */
             $('html, body').stop().animate({
                 'scrollTop': $target.offset().top
             }, cfg.scrollDuration, 'swing').promise().done(function () {
