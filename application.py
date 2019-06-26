@@ -56,6 +56,13 @@ class User(db.Model):
         self.hashword = hashword
         self.email = email
 
+class Email (db.Model):
+    __table__ = db.Model.metadata.tables['interessados']
+
+    def __init__(self, email):
+        self.email = email
+
+
 class Matches(db.Model):
     __table__ = db.Model.metadata.tables['matches']
 
@@ -203,9 +210,20 @@ def register():
             return apology("Username is already taken!")
 
 # Renders our blog page
-@app.route("/", methods=["GET"])
+@app.route("/", methods=["GET", "POST"])
 def blog():
-    return render_template("blog_3.html")
+    if request.method == "GET":
+        return render_template("blog_3.html")
+
+    elif request.method == "POST":
+
+        email = request.form.get("email")
+        print(email)
+        email_entry = Email(email)
+        db.session.add(email_entry)
+        db.session.commit()
+
+        return redirect("/")
 
 # Renders index page
 @app.route("/index", methods=["GET", "POST"])
@@ -421,8 +439,9 @@ def profile():
             setattr(user, key, value)
         db.session.commit()
 
-        return render_template("profile.html", **users_dict, marked=marked, **qualitative_descriptions)
-                               #list_of_quali=list_of_quali)   **dict_of_quali,
+        return redirect("/index")
+        #return render_template("profile.html", **users_dict, marked=marked, **qualitative_descriptions)
+
 
 
 
@@ -517,8 +536,6 @@ def match():
         sexo = getattr(user, 'sex')
         # Preferência de sexos (pegar base toda ou apenas aqueles com mesmo sexo)
         preference = getattr(user, 'sexes')
-        if not preference:
-            return apology("Você deve preencher seus interesses e completar seu perfil antes de acessar as sugestões.", 400)
 
         if preference == 0:
             query = User.query.filter_by(sex=sexo).all()
@@ -526,6 +543,8 @@ def match():
             query = User.query.filter(or_(User.sexes == 1, User.sex == 1))
         elif preference == 1 and sexo == 0:
             query = User.query.filter(or_(User.sexes == 1, User.sex == 0))
+        elif not preference:
+            return apology("Você deve preencher seus interesses e completar seu perfil antes de acessar as sugestões.", 400)
 
         if not query:
             return message("Siga os passos. 1)Preencha seus interesses 2) Preencha seu perfil 3)Veja as sugestões de pessoas")

@@ -54,7 +54,7 @@
                     <div class="row">
                         <h3>{{ item["name"] }}</h3>
                         <p><tr>{{item["age"]}}, {{item["curso"]}}</tr></p>
-                        <p><tr>{{item["facebook"]}}</tr></p>
+                        <p><tr><a href=http://{{item["facebook"]}}>{{item["facebook"]}}</a></tr></p>
                         <h5> Interesses:</h5>
                         <p><tr>{{item["top_1"]}}</tr></p>
                         <p><tr>{{item["top_1_item"]}}</tr></p>
@@ -62,6 +62,7 @@
                         <p><tr>{{item["top_2_item"]}}</tr></p>
                         <p><td>{{item["top_3"]}}</td></p><br>
                         <p><tr>{{item["top_3_item"]}}</tr></p>
+
                         <hr color="grey">
                     </div>
                     {% endfor %}
