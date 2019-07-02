@@ -56,16 +56,12 @@ class User(db.Model):
         self.hashword = hashword
         self.email = email
 
-<<<<<<< HEAD
 class Email (db.Model):
     __table__ = db.Model.metadata.tables['interessados']
 
     def __init__(self, email):
         self.email = email
 
-
-=======
->>>>>>> 2c665985c639632d7ca5fefcfdc449be5fa14d1f
 class Matches(db.Model):
     __table__ = db.Model.metadata.tables['matches']
 
@@ -213,7 +209,6 @@ def register():
             return apology("Username is already taken!")
 
 # Renders our blog page
-<<<<<<< HEAD
 @app.route("/", methods=["GET", "POST"])
 def blog():
     if request.method == "GET":
@@ -229,12 +224,6 @@ def blog():
 
         return redirect("/")
 
-=======
-@app.route("/", methods=["GET"])
-def blog():
-    return render_template("blog_3.html")
-
->>>>>>> 2c665985c639632d7ca5fefcfdc449be5fa14d1f
 # Renders index page
 @app.route("/index", methods=["GET", "POST"])
 @login_required
@@ -248,7 +237,6 @@ def index():
 def lifestyle():
     if request.method == "GET":
         query = Traits.query.filter_by(user_id=session['user_id']).first()
-<<<<<<< HEAD
 
         questions = dict()
 
@@ -269,30 +257,6 @@ def lifestyle():
         manuals = ['jardinagem', 'marcenaria', 'outro']
         studies = ['estudos em ciências sociais', 'estudos em ciências exatas', 'estudos em literatura', 'estudos sobre arte', 'estudos em línguas estrangeiras', 'outro']
 
-
-=======
-
-        questions = dict()
-
-        if query:
-            for item in traits_db_fields:
-                questions[item] = getattr(query, item)
-        else:
-            for item in traits_db_fields:
-                questions[item] = 0
-
-
-        sports = ['futebol', 'vôlei', 'handebol', 'basquete', 'tênis', 'corrida', 'musculação', 'surf', 'natação', 'outro']
-        games = ['League of Legends', 'Dota', 'WOW', 'CS', 'Outro']
-        events = ['Shows', 'Teatro', 'Exposições de Arte', 'Performances de Dança', 'Cinema', 'Outro']
-        art = ['Música', 'Artes Visuais', 'Dança', 'Fotografia', 'Literatura', 'Teatro']
-        religion = ['Missa Católica', 'Centro Espírita', 'Outro']
-        air = ['trilhas', 'acampar', 'meditar', 'outro']
-        manuals = ['jardinagem', 'marcenaria', 'outro']
-        studies = ['estudos em ciências sociais', 'estudos em ciências exatas', 'estudos em literatura', 'estudos sobre arte', 'estudos em línguas estrangeiras', 'outro']
-
-
->>>>>>> 2c665985c639632d7ca5fefcfdc449be5fa14d1f
 
         return render_template("lifestyle.html", **questions, sports=sports, games=games, events=events, art=art,
                                religion=religion, air=air, manuals=manuals, studies=studies)
@@ -473,14 +437,8 @@ def profile():
             setattr(user, key, value)
         db.session.commit()
 
-<<<<<<< HEAD
         return redirect("/index")
         #return render_template("profile.html", **users_dict, marked=marked, **qualitative_descriptions)
-
-=======
-        return render_template("profile.html", **users_dict, marked=marked, **qualitative_descriptions)
-                               #list_of_quali=list_of_quali)   **dict_of_quali,
->>>>>>> 2c665985c639632d7ca5fefcfdc449be5fa14d1f
 
 
 
@@ -575,11 +533,6 @@ def match():
         sexo = getattr(user, 'sex')
         # Preferência de sexos (pegar base toda ou apenas aqueles com mesmo sexo)
         preference = getattr(user, 'sexes')
-<<<<<<< HEAD
-=======
-        if not preference:
-            return apology("Você deve preencher seus interesses e completar seu perfil antes de acessar as sugestões.", 400)
->>>>>>> 2c665985c639632d7ca5fefcfdc449be5fa14d1f
 
         if preference == 0:
             query = User.query.filter_by(sex=sexo).all()
@@ -587,14 +540,11 @@ def match():
             query = User.query.filter(or_(User.sexes == 1, User.sex == 1))
         elif preference == 1 and sexo == 0:
             query = User.query.filter(or_(User.sexes == 1, User.sex == 0))
-<<<<<<< HEAD
         elif preference == 1 and sexo == 2:
             query = User.query.filter(or_(User.sexes == 1, User.sex == 2))
 
         for row in query:
             print(row)
-=======
->>>>>>> 2c665985c639632d7ca5fefcfdc449be5fa14d1f
 
         if not query:
             return message("Siga os passos. 1)Preencha seus interesses 2) Preencha seu perfil 3)Veja as sugestões de pessoas")
@@ -640,18 +590,12 @@ def match():
                         lf_key = 'lf{}'.format(i)
                         row_dict[lf_key] = getattr(query_traits_row, lf_key)
 
-<<<<<<< HEAD
                 print("2")
-=======
->>>>>>> 2c665985c639632d7ca5fefcfdc449be5fa14d1f
+
                 for i in range(1, 25):
                     if lf_dict['lf{}'.format(i)] == 1 and lf_dict['lf{}'.format(i)] == row_dict['lf{}'.format(i)]:
                         compatibilidade = compatibilidade + 2
 
-<<<<<<< HEAD
-                print("1")
-=======
->>>>>>> 2c665985c639632d7ca5fefcfdc449be5fa14d1f
                 compatibility_of_users['{}'.format(row_id)] = compatibilidade
                 x = ((v, k) for k, v in compatibility_of_users.items())
                 x = sorted(x, reverse=True)
