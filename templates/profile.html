@@ -51,6 +51,7 @@
     <p style="color:white; text-align:center"> Preencha seu perfil de forma completa e detalhada. São essas as informações que outros usuários verão sobre você.</p>
 
 
+
     <form class="label" action="/profile" method="POST" role="form">
         <!-- form to collect profile info -->
         <div class="align-form">
@@ -116,6 +117,7 @@
                         {% set top_1_text = top_1_text %}
                     {% endif %}
                     <textarea name="top_1_text" class="full-width" placeholder="Detalhar seu interesse...">{{top_1_text}}</textarea>
+
             <br>
             <div class="column">
                 <div class="item-plan__block">
@@ -168,6 +170,7 @@
                         {% endfor %}
                     </select>
                     <textarea name="top_3_item" class="">{{top_3_item}}</textarea>
+
                     <label>Detalhar atividade (opcional):</label>
                     {% if top_3_text == None %}
                         {% set top_3_text = "" %}
@@ -196,6 +199,8 @@
                     {% endif %}
 
                         <p><input type="radio" name="sexes" value="1"{{aberto}} checked> Estou aberto(a) a conhecer pessoas de todos os sexos. <br>
+
+
 
                         <input type="radio" name="sexes" value="0"{{fechado}}> Estou aberto(a) a conhecer apenas pessoas do mesmo sexo que o meu.</p><br>
 

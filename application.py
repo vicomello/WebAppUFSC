@@ -62,7 +62,6 @@ class Email (db.Model):
     def __init__(self, email):
         self.email = email
 
-
 class Matches(db.Model):
     __table__ = db.Model.metadata.tables['matches']
 
@@ -438,7 +437,6 @@ def profile():
             setattr(user, key, value)
         db.session.commit()
 
-
         return redirect("/index")
         #return render_template("profile.html", **users_dict, marked=marked, **qualitative_descriptions)
 
@@ -597,8 +595,6 @@ def match():
                 for i in range(1, 25):
                     if lf_dict['lf{}'.format(i)] == 1 and lf_dict['lf{}'.format(i)] == row_dict['lf{}'.format(i)]:
                         compatibilidade = compatibilidade + 2
-
-                print("1")
 
                 compatibility_of_users['{}'.format(row_id)] = compatibilidade
                 x = ((v, k) for k, v in compatibility_of_users.items())
