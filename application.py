@@ -543,8 +543,11 @@ def match():
             query = User.query.filter(or_(User.sexes == 1, User.sex == 1))
         elif preference == 1 and sexo == 0:
             query = User.query.filter(or_(User.sexes == 1, User.sex == 0))
-        elif not preference:
-            return apology("Você deve preencher seus interesses e completar seu perfil antes de acessar as sugestões.", 400)
+        elif preference == 1 and sexo == 2:
+            query = User.query.filter(or_(User.sexes == 1, User.sex == 2))
+
+        for row in query:
+            print(row)
 
         if not query:
             return message("Siga os passos. 1)Preencha seus interesses 2) Preencha seu perfil 3)Veja as sugestões de pessoas")
@@ -590,10 +593,12 @@ def match():
                         lf_key = 'lf{}'.format(i)
                         row_dict[lf_key] = getattr(query_traits_row, lf_key)
 
+                print("2")
                 for i in range(1, 25):
                     if lf_dict['lf{}'.format(i)] == 1 and lf_dict['lf{}'.format(i)] == row_dict['lf{}'.format(i)]:
                         compatibilidade = compatibilidade + 2
 
+                print("1")
                 compatibility_of_users['{}'.format(row_id)] = compatibilidade
                 x = ((v, k) for k, v in compatibility_of_users.items())
                 x = sorted(x, reverse=True)
