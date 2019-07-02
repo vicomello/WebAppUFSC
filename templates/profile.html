@@ -1,0 +1,199 @@
+{% block main %}
+<!DOCTYPE html>
+<html class="no-js" lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content=s"width=device-width, initial-scale=1">
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="static/base3.css">
+    <link rel="stylesheet" href="static/base.css">
+    <link rel="stylesheet" href="static/vendor.css">
+    <link rel="stylesheet" href="static/main.css">
+    <link rel="stylesheet" href="static/match.css">
+    <link rel="stylesheet" href="static/main4.css">
+    <link rel="stylesheet" href="static/custom.css">
+    <!-- script
+    ================================================== -->
+    <script src="js/modernizr.js"></script>
+    <script src="js/pace.min.js"></script>
+</head>
+<body>
+    <header class="s-header">
+        <div class="header-logo">
+            <a class="site-logo" href="blog.html">
+                <a class="mark" href="/" title="intro">WebAppUFSC</a>
+            </a>
+        </div>
+
+            <nav class="row header-nav-wrap wide">
+                <ul class="header-main-nav">
+                    <li><a href="/index" title="blog" method="get">Home</a></li>
+                    <li><a href="/" title="intro" method="get">Sobre</a></li>
+                    <li><a href="/help" title="help" method="get">Como funciona</a></li>
+                    <li class="current"><a href="/profile" title="profile" method="get">Profile</a></li>
+                    <li><a href="/logout" title="logout">Sair</a></li>
+                </ul>
+            </nav>
+            <a class="header-menu-toggle" href="/index"><span>Menu</span></a>
+    </header>
+
+<!--===============================================end of header==================================================-->
+    <div class="s-about-2">
+    <section>
+    <h1> Edite seu perfil</h1>
+    <p style="color:white; text-align:center"> Preencha seu perfil de forma completa e detalhada. São essas as informações que outros usuários verão sobre você.</p>
+
+    <form class="label" action="/profile" method="POST" role="form">
+        <!-- form to collect profile info -->
+        <div class="align-form">
+            <div class="column">
+                <div class="item-plan__block">
+                    {% if name == None %}
+                        {% set name = "" %}
+                    {% elif name != none %}
+                        {% set name = name %}
+                    {% endif %}
+                    <p> Nome:</p><textarea name="name" class="full-width" placeholder="Nome">{{name}}</textarea>
+                    {% if age == None %}
+                        {% set age = "" %}
+                    {% elif age != none %}
+                        {% set age = age %}
+                    {% endif %}
+                    <p> Idade:</p><textarea name="age" class="full-width" placeholder="Idade">{{age}}</textarea>
+                    {% if curso == None %}
+                        {% set curso = "" %}
+                    {% elif curso != none %}
+                        {% set curso = curso %}
+                    {% endif %}
+                    <p> Curso:</p><textarea name="curso" class="full-width" placeholder="Curso">{{curso}}</textarea>
+                    {% if facebook == None %}
+                        {% set facebook = "" %}
+                    {% elif facebook != none %}
+                        {% set facebook = facebook %}
+                    {% endif %}
+                    <p> Link para o perfil no facebook:</p><textarea name="facebook" class="full-width" placeholder="Link do perfil no facebook">{{facebook}}</textarea>
+                    <p style="line-height:1.4"> Selecione até três atividades para as quais você mais gostaria de encontrar parceiros(as). Caso
+                        sua prioridade seja encontrar pessoas para apenas uma atividade, selecione a mesma atividade
+                        nas três opções.</p>
+
+                    <p> Atividade 1:</p>
+                    <div class="container">
+                    <div class="box">
+                    <div class="box-row">
+                    <div class="box-cell box1">
+                    <select name="top_1" class="full-width" value={{top_1}}>
+                        {% for item in marked %}
+                        {% if top_1 == item %}
+                        {% set selected1 = 'selected' %}
+                        {% endif %}
+                        <option {{selected1}}> {{ item }}</option>
+                        {% endfor %}
+                        </select>
+                    </div>
+                      <div class="box-cell box2">
+                    {% if top_1_item == None %}
+                    {% set top_1_item = "" %}
+                    {% elif top_1_item != none %}
+                    {% set top_1_item = top_1_item %}
+                    {% endif %}
+                    <textarea name="top_1_item" class="">{{top_1_item}}</textarea>
+                      </div>
+                      </div>
+                    </div>
+                    </div>
+
+                    {% if top_1_text == None %}
+                        {% set top_1_text = "" %}
+                    {% elif top_1_text != none %}
+                        {% set top_1_text = top_1_text %}
+                    {% endif %}
+                    <textarea name="top_1_text" class="full-width" placeholder="Detalhar seu interesse...">{{top_1_text}}</textarea>
+
+                    <p> Atividade 2:</p>
+                    <select name="top_2" class="full-width">
+                        {% for item in marked %}
+                            {% if top_2 == item %}
+                            {% set selected2 = 'selected' %}
+                            {% endif %}
+                        <option value="{{item}}" {{selected2}}> {{ item }}</option>
+                        {% endfor %}
+                    </select>
+                    <textarea name="top_2_item" class="">{{top_2_item}}</textarea>
+                    <label>Detalhar atividade (opcional):</label>
+                    {% if top_2_text == None %}
+                        {% set top_2_text = "" %}
+                    {% elif top_2_text != none %}
+                        {% set top_2_text = top_2_text %}
+                    {% endif %}
+                    <textarea name="top_2_text" class="full-width" placeholder="Descreva seu interesse...">{{top_2_text}}</textarea>
+
+                    <p> Atividade 3:</p>
+                    <select name="top_3" class="full-width">
+                        {% for item in marked %}
+                            {% if top_3 == item %}
+                            {% set selected3 = 'selected' %}
+                            {% endif %}
+                        <option value="{{item}}" {{selected3}}> {{ item }}</option>
+                        {% endfor %}
+                    </select>
+                    <textarea name="top_3_item" class="">{{top_3_item}}</textarea>
+                    <label>Detalhar atividade (opcional):</label>
+                    {% if top_3_text == None %}
+                        {% set top_3_text = "" %}
+                    {% elif top_3_text != none %}
+                        {% set top_3_text = top_3_text %}
+                    {% endif %}
+                    <textarea name="top_3_text" class="full-width" placeholder="Descreva seu interesse...">{{top_3_text}}</textarea>
+                        <p> Pergunta quebra-gelo:</p><textarea name="ice_breaker" class="full-width">{{ice_breaker}}</textarea>
+                        <p>Sexo:</p>
+                    {% if sex == 0 %}
+                        {% set femalechecked = 'checked' %}
+                    {% elif sex == 1 %}
+                        {% set malechecked = 'checked' %}
+                    {% else %}
+                        {% set otherchecked = 'checked' %}
+                    {% endif %}
+                        <p><input type="radio" name="sex" value="1" {{malechecked}}>Male
+                        <input type="radio" name="sex" value="0" {{femalechecked}}>Female
+                        <input type="radio" name="sex" value="2"{{otherchecked}}>Other</p>
+                        <p>Preferência:</p>
+                    {% if sexes == 1 %}
+                        {% set aberto = 'checked' %}
+                    {% else %}
+                        {% set fechado = 'checked' %}
+                    {% endif %}
+
+                        <p><input type="radio" name="sexes" value="1"{{aberto}} checked> Estou aberto(a) a conhecer pessoas de todos os sexos. <br>
+                        <input type="radio" name="sexes" value="0"{{fechado}}> Estou aberto(a) a conhecer apenas pessoas do mesmo sexo que o meu.</p><br>
+
+                         <button type="submit" class="btn--primary">Submeter</button>
+                    </form>
+                </div>
+    </div>
+            </div>
+        </div>
+    </form>
+    </section>
+    </div>
+
+    <script>
+        function myFunction() {
+        var x = document.getElementById("myTextarea").value;
+        document.getElementById("demo").innerHTML = x;
+        }
+
+
+
+    </script>
+
+
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% block main %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Matching</title>
+    <link rel="stylesheet" href="static/main5.css">
+    <link rel="stylesheet" href="static/custom.css">
+    <link rel="stylesheet" href="static/vendor.css">
+    <link rel="stylesheet" href="static/base.css">
+    <link rel="stylesheet" href="static/base_3.css">
+    <link rel="stylesheet" href="static/match.css">
+</head>
+
+<!-- ======= start of body ====== -->
+<body>
+
+<!-- ====== menu bar / header ======= -->
+
+    <header class="s-header">
+        <div class="header-logo">
+            <a class="site-logo" href="/index">
+                <a class="mark" href="/index" title="intro">WebAppUFSC</a>
+            </a>
+        </div>
+        <nav class="row header-nav-wrap wide">
+            <div class="header">
+                <ul class="header-main-nav">
+                    <li><a href="/index" title="blog" method="get">Home</a></li>
+                    <li><a href="/" title="intro" method="get">Sobre</a></li>
+                    <li><a href="/help" title="help" method="get">Como funciona</a></li>
+                    <li><a href="/profile" title="profile" method="get">Profile</a></li>
+                    <li><a href="/logout" title="logout">Sair</a></li>
+                </ul>
+            </div>
+        </nav>
+        <a class="header-menu-toggle"><span>Menu</span></a>
+    </header>
+<div class="s-about-2">
+<section>
+    <h1> Lista de sugestões</h1>
+        <!-- form to understand interests -->
+            <!--<label> Meus interesses</label>-->
+        <div class="align-form">
+
+        <!--todo-->
+            <br>
+
+            <div class="column">
+                <div class="item-plan__block">
+                  {% for item in top_people %}
+                    <div class="row">
+                        <form action="/match" method="POST">
+                        <h3>{{ item["name"] }}</h3>
+                        <p><tr>{{item["age"]}}, {{item["curso"]}}</tr></p>
+                        <button method="post" class="btn--primary" style="float: right;" type="submit"
+                                                              name ="person_id" id="person_id"
+                                                              value="{{item["user_id"]}}">MATCH!</button>
+                        <h5> Interesses:</h5>
+                        <p><tr>{{item["top_1"]}}</tr></p>
+                        <p><td>{{item["top_2"]}}</td></p>
+                        <p><td>{{item["top_3"]}}</td></p><br>
+                        </form>
+                        <hr color="grey">
+                  </div>
+                    {% endfor %}
+
+                    <p>{{message}}</p>
+                    <p>{{mensagem}}</p>
+            </div>
+
+        </div>
+</section>
+</div>
+
+</body>
+<script>
+    document.getElementById("person_id").addEventListener("click", myFunction);
+    object.onclick = function(){myFunction};
+     myFunction() {
+        person_id = document.getElementById("person_id").value
+        }
+     var person_id = document.getElementById("person_id").value;
+
+</script>
+
+</html>
+
+{% endblock %}

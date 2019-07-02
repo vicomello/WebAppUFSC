@@ -503,7 +503,7 @@ textarea {
  * ------------------------------------------------------------------- */
 @media only screen and (max-width:1200px) {
   .row .row {
-    margin-left: -16px;
+    margin-left: auto;
     margin-right: -16px;
   }
 
@@ -944,4 +944,4 @@ textarea {
   text-align: center;
 }
 
-/*# sourceMappingURL=base.css.map */
+sourceMappingURL=base.css.map
