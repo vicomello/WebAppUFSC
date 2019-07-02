@@ -47,12 +47,17 @@
 <!--===============================================end of header==================================================-->
     <div class="s-about-2">
     <section>
+<<<<<<< HEAD
     <h1> Edite seu perfil</h1>
     <p style="color:white; text-align:center"> Preencha seu perfil de forma completa e detalhada. São essas as informações que outros usuários verão sobre você.</p>
+=======
+    <h1> Edit your profile</h1>
+>>>>>>> 2c665985c639632d7ca5fefcfdc449be5fa14d1f
 
     <form class="label" action="/profile" method="POST" role="form">
         <!-- form to collect profile info -->
         <div class="align-form">
+<<<<<<< HEAD
             <div class="column">
                 <div class="item-plan__block">
                     {% if name == None %}
@@ -115,6 +120,29 @@
                         {% set top_1_text = top_1_text %}
                     {% endif %}
                     <textarea name="top_1_text" class="full-width" placeholder="Detalhar seu interesse...">{{top_1_text}}</textarea>
+=======
+            <br>
+            <div class="column">
+                <div class="item-plan__block">
+
+                        <p>Nome:</p><textarea name="name" class="full-width">{{name}}</textarea>
+                        <p> Idade:</p><textarea name="age" class="full-width">{{age}}</textarea>
+                        <p> Curso:</p><textarea name="curso" class="full-width">{{curso}}</textarea>
+                        <p> Link do perfil no facebook:</p><textarea name="facebook" class="full-width">{{facebook}}</textarea>
+                        <p> Selecione até três atividades para as quais você mais gostaria de encontrar pessoas</p>
+
+                    <p> Atividade 1:</p>
+                    <select name="top_1" class="full-width" value={{top_1}}>
+                        {% for item in marked %}
+                            {% if top_1 == item %}
+                            {% set selected1 = 'selected' %}
+                            {% endif %}
+                        <option {{selected1}}> {{ item }}</option>
+                        {% endfor %}
+                    </select>
+                    <textarea name="top_1_item" class="">{{top_1_item}}</textarea>
+                    <label>Detalhar atividade (opcional):</label> <textarea name="top_1_text" class="full-width">{{top_1_text}}</textarea>
+>>>>>>> 2c665985c639632d7ca5fefcfdc449be5fa14d1f
 
                     <p> Atividade 2:</p>
                     <select name="top_2" class="full-width">
@@ -126,6 +154,7 @@
                         {% endfor %}
                     </select>
                     <textarea name="top_2_item" class="">{{top_2_item}}</textarea>
+<<<<<<< HEAD
                     <label>Detalhar atividade (opcional):</label>
                     {% if top_2_text == None %}
                         {% set top_2_text = "" %}
@@ -134,6 +163,9 @@
                     {% endif %}
                     <textarea name="top_2_text" class="full-width" placeholder="Descreva seu interesse...">{{top_2_text}}</textarea>
 
+=======
+                    <label>Detalhar atividade (opcional):</label> <textarea name="top_2_text" class="full-width">{{top_2_text}}</textarea>
+>>>>>>> 2c665985c639632d7ca5fefcfdc449be5fa14d1f
                     <p> Atividade 3:</p>
                     <select name="top_3" class="full-width">
                         {% for item in marked %}
@@ -144,6 +176,7 @@
                         {% endfor %}
                     </select>
                     <textarea name="top_3_item" class="">{{top_3_item}}</textarea>
+<<<<<<< HEAD
                     <label>Detalhar atividade (opcional):</label>
                     {% if top_3_text == None %}
                         {% set top_3_text = "" %}
@@ -151,6 +184,9 @@
                         {% set top_3_text = top_3_text %}
                     {% endif %}
                     <textarea name="top_3_text" class="full-width" placeholder="Descreva seu interesse...">{{top_3_text}}</textarea>
+=======
+                    <label>Detalhar atividade (opcional):</label> <textarea name="top_3_text" class="full-width">{{top_3_text}}</textarea>
+>>>>>>> 2c665985c639632d7ca5fefcfdc449be5fa14d1f
                         <p> Pergunta quebra-gelo:</p><textarea name="ice_breaker" class="full-width">{{ice_breaker}}</textarea>
                         <p>Sexo:</p>
                     {% if sex == 0 %}
@@ -170,7 +206,11 @@
                         {% set fechado = 'checked' %}
                     {% endif %}
 
+<<<<<<< HEAD
                         <p><input type="radio" name="sexes" value="1"{{aberto}} checked> Estou aberto(a) a conhecer pessoas de todos os sexos. <br>
+=======
+                        <p><input type="radio" name="sexes" value="1"{{aberto}}> Estou aberto(a) a conhecer pessoas de todos os sexos. <br>
+>>>>>>> 2c665985c639632d7ca5fefcfdc449be5fa14d1f
                         <input type="radio" name="sexes" value="0"{{fechado}}> Estou aberto(a) a conhecer apenas pessoas do mesmo sexo que o meu.</p><br>
 
                          <button type="submit" class="btn--primary">Submeter</button>
