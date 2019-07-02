@@ -259,7 +259,6 @@ def lifestyle():
         studies = ['estudos em ciências sociais', 'estudos em ciências exatas', 'estudos em literatura', 'estudos sobre arte', 'estudos em línguas estrangeiras', 'outro']
 
 
-
         return render_template("lifestyle.html", **questions, sports=sports, games=games, events=events, art=art,
                                religion=religion, air=air, manuals=manuals, studies=studies)
 
@@ -439,9 +438,9 @@ def profile():
             setattr(user, key, value)
         db.session.commit()
 
+
         return redirect("/index")
         #return render_template("profile.html", **users_dict, marked=marked, **qualitative_descriptions)
-
 
 
 
@@ -594,11 +593,13 @@ def match():
                         row_dict[lf_key] = getattr(query_traits_row, lf_key)
 
                 print("2")
+
                 for i in range(1, 25):
                     if lf_dict['lf{}'.format(i)] == 1 and lf_dict['lf{}'.format(i)] == row_dict['lf{}'.format(i)]:
                         compatibilidade = compatibilidade + 2
 
                 print("1")
+
                 compatibility_of_users['{}'.format(row_id)] = compatibilidade
                 x = ((v, k) for k, v in compatibility_of_users.items())
                 x = sorted(x, reverse=True)
