@@ -753,8 +753,9 @@ def matched():
                             double_matches_list.append(key)
 
         if len(double_matches_list) == 0:
-            message = "As pessoas ainda não tiveram a chance de ver seu perfil e se conectar com você. Espere por um " \
-                      "tempo até que as pessoas tenham a chance de se conectar com você!"
+            message = "Falta pouco para você conhecer seus novos amigos! Espere um tempo até que as pessoas tenham a" \
+                      "chance de ver seu perfil e demonstrar interesse. Entre novamente dentro de algumas horas para " \
+                      "conhecer as pessoas que demonstraram interesse mútuo."
         else:
             message = ""
 
