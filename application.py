@@ -217,7 +217,6 @@ def blog():
     elif request.method == "POST":
 
         email = request.form.get("email")
-        print(email)
         email_entry = Email(email)
         db.session.add(email_entry)
         db.session.commit()
@@ -543,9 +542,6 @@ def match():
         elif preference == 1 and sexo == 2:
             query = User.query.filter(or_(User.sexes == 1, User.sex == 2))
 
-        for row in query:
-            print(row)
-
         if not query:
             return message("Siga os passos. 1)Preencha seus interesses 2) Preencha seu perfil 3)Veja as sugestões de pessoas")
 
@@ -590,8 +586,6 @@ def match():
                         lf_key = 'lf{}'.format(i)
                         row_dict[lf_key] = getattr(query_traits_row, lf_key)
 
-                print("2")
-
                 for i in range(1, 25):
                     if lf_dict['lf{}'.format(i)] == 1 and lf_dict['lf{}'.format(i)] == row_dict['lf{}'.format(i)]:
                         compatibilidade = compatibilidade + 2
@@ -634,7 +628,6 @@ def match():
 
         # Mostrar as pessoas que mostraram interesse no user
         for item in pessoas_interessadas:
-            print("item: {}".format(item))
             # Filtrar aquelas que nao aparecem na lista de compatibilidade (para nao aparecer 2x)
             if item not in people_in_order:
                 # Filtrar aquelas que ele já marcou que tem interesse (para nao repetirem)
@@ -645,8 +638,6 @@ def match():
             iteracoes = 10
         else:
             iteracoes = len(people_in_order)
-
-            print("people in order: {}".format(people_in_order))
 
         for i in range(iteracoes):
             item = people_in_order[i]
@@ -678,7 +669,6 @@ def match():
                 if mate != 0:
                     one_way_match.append(mate)
 
-        print("one_way_match is {}".format(one_way_match))
 
         # Getting new matches from match form
         person_id = request.form.get('person_id')
@@ -687,7 +677,6 @@ def match():
         # Removing duplicates
         one_way = list(dict.fromkeys(one_way_match))
 
-        print("one way is {}".format(one_way))
 
         one_way_dict['user_id'] = session['user_id']
         for i in range(0, 20):
@@ -700,7 +689,6 @@ def match():
         user = Matches.query.filter_by(user_id=session['user_id']).first()
         if not user:
             matches_entry = Matches(**one_way_dict)
-            print("matches_entry is {}".format(matches_entry))
             db.session.add(matches_entry)
             db.session.commit()
         else:
