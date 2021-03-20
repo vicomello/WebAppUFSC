@@ -13,7 +13,7 @@ honcho==0.7.1
 huey==1.10.2
 IPy==0.83
 itsdangerous==1.1.0
-Jinja2==2.10
+Jinja2==2.11.3
 MarkupSafe==1.1.1
 msgpack-python==0.4.8
 mysql==0.0.2
