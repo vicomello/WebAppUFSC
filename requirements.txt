@@ -1,6 +1,6 @@
 asgi-redis==0.14.1
 asgiref==0.14.0
-autobahn==0.16.0
+autobahn==20.12.3
 channels==0.17.3
 Click==7.0
 colorama==0.3.7
